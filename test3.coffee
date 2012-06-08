@@ -86,27 +86,13 @@ Game.Views.App = class extends Backbone.View
 
     plane = new THREE.PlaneGeometry tiles * size, tiles * size, tiles, tiles
 
-    plane.materials[0] = new THREE.MeshBasicMaterial { map: ts }
-    plane.materials[1] = new THREE.MeshBasicMaterial { map: ts }
-
+    counter = 0
     for uvs in plane.faceVertexUvs
       for j in [0...uvs.length]
-        console.log uvs[j], grassT
-        uvs[j] = grassT
-        # for uv in uvs[j]
-        #   console.log uv.u, uv.v
-        #   uv.u *= tiles
-        #   uv.v *= tiles
-        #   uv.u /= 2
-        # console.log('---', uvs[j].length)
+        uvs[j] = if counter is 0 then grassT else waterT
+        counter = if counter is 0 then 1 else 0
 
-
-    counter = 0
-    for face in plane.faces
-      face.materialIndex = counter
-      counter = if counter is 0 then 1 else 0
-
-    mesh = new THREE.Mesh plane, new THREE.MeshFaceMaterial
+    mesh = new THREE.Mesh plane, new THREE.MeshBasicMaterial { map: ts }
     mesh.rotation.x = -Math.PI / 2
 
     @scene.add(mesh)
