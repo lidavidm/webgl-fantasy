@@ -52,14 +52,11 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!./resource"],
               plane.faces[i].materialIndex = 0
             else
               plane.faces[i].materialIndex = 1
-          plane.materials[0] = new THREE.MeshBasicMaterial {
-            color: 0x00000000,
-            wireframe: true
-          }
+          plane.materials[0] = new THREE.MeshBasicMaterial
+            color: 0x000000,
+            opacity: 0
 
-          plane.materials[1] = new THREE.MeshBasicMaterial {
-            map: ts
-          }
+          plane.materials[1] = new THREE.MeshBasicMaterial { map: ts }
 
           mesh = new THREE.Mesh plane, new THREE.MeshFaceMaterial
           mesh.rotation.x = -Math.PI / 2
