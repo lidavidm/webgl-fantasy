@@ -33,6 +33,17 @@
          "width":5,
          "x":0,
          "y":0
+        }, 
+        {
+         "data":[0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         "height":5,
+         "name":"Tile Layer 2",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":5,
+         "x":0,
+         "y":0
         }],
  "orientation":"orthogonal",
  "properties":
@@ -43,7 +54,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "image":"ts.png",
+         "image": "ts.png",
          "imageheight":32,
          "imagewidth":64,
          "margin":0,

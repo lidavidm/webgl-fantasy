@@ -23,7 +23,7 @@ define deps, ($, THREE, views, resource) ->
 
       @loading = new $.Deferred
   
-      $.getJSON "res/test.json", (data) =>
+      $.getJSON "res/test2.json", (data) =>
         @appView = new views.Tilemap @renderer, @scene,
           new resource.Resource "res/", data
         @loading.resolve()

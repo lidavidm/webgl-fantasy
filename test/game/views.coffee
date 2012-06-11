@@ -18,7 +18,12 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!./resource"],
           resource.Path.join path, mapJson.tilesets[0].image
         )
 
-        @uvs = [null]
+        @uvs = [[
+          new THREE.UV(0, 0),
+          new THREE.UV(0, 0),
+          new THREE.UV(0, 0),
+          new THREE.UV(0, 0)
+        ]]
 
         [deltaU, deltaV] = [@tileWidth / ts.image.width ,
            @tileHeight / ts.image.height ]
@@ -32,17 +37,36 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!./resource"],
               new THREE.UV(u + deltaU, v + deltaV),
               new THREE.UV(u + deltaU, v)
             ]
+        console.log mapJson.layers
+        for layer in mapJson.layers.reverse()
+          if layer.type isnt "tilelayer" then continue
 
-        plane = new THREE.PlaneGeometry(
-          @width * @tileWidth, @height * @tileHeight, @width, @height
-        )
+          plane = new THREE.PlaneGeometry(
+            @width * @tileWidth, @height * @tileHeight, @width, @height
+          )
 
-        plane.faceVertexUvs[0] = (@uvs[x] for x in mapJson.layers[0].data)
+          plane.faceVertexUvs[0] = (@uvs[x] for x in layer.data)
 
-        mesh = new THREE.Mesh plane, new THREE.MeshBasicMaterial { map: ts }
-        mesh.rotation.x = -Math.PI / 2
+          for i in [0...plane.faces.length]
+            if layer.data[i] is 0
+              plane.faces[i].materialIndex = 0
+            else
+              plane.faces[i].materialIndex = 1
+          plane.materials[0] = new THREE.MeshBasicMaterial {
+            color: 0x00000000,
+            wireframe: true
+          }
 
-        @scene.add(mesh)
+          plane.materials[1] = new THREE.MeshBasicMaterial {
+            map: ts
+          }
+
+          mesh = new THREE.Mesh plane, new THREE.MeshFaceMaterial
+          mesh.rotation.x = -Math.PI / 2
+          console.log mapJson
+
+          @scene.add(mesh)
+          console.log mesh
 
     return {
       Tilemap: Tilemap
