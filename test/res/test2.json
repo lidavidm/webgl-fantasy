@@ -1,7 +1,7 @@
 { "height":5,
  "layers":[
         {
-         "data":[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+         "data":[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
          "height":5,
          "name":"Tile Layer 1",
          "opacity":1,
@@ -10,7 +10,7 @@
          "width":5,
          "x":0,
          "y":0
-        }, 
+        },
         {
          "height":5,
          "name":"Object Layer 1",
@@ -33,9 +33,9 @@
          "width":5,
          "x":0,
          "y":0
-        }, 
-        {
-         "data":[0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        },
+     {
+         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3],
          "height":5,
          "name":"Tile Layer 2",
          "opacity":1,
@@ -44,7 +44,7 @@
          "width":5,
          "x":0,
          "y":0
-        }],
+     }],
  "orientation":"orthogonal",
  "properties":
     {
@@ -54,11 +54,11 @@
  "tilesets":[
         {
          "firstgid":1,
-         "image": "ts.png",
-         "imageheight":32,
-         "imagewidth":64,
+         "image":"tileset32.png",
+         "imageheight":96,
+         "imagewidth":96,
          "margin":0,
-         "name":"ts",
+         "name":"tileset32",
          "properties":
             {
 

@@ -28,8 +28,8 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!./resource"],
         [deltaU, deltaV] = [@tileWidth / ts.image.width ,
            @tileHeight / ts.image.height ]
 
-        for x in [0...ts.image.width / @tileWidth]
-          for y in [0...ts.image.height / @tileHeight]
+        for y in [0...ts.image.height / @tileHeight]
+          for x in [0...ts.image.width / @tileWidth]
             [u, v] = [x * deltaU, y * deltaV]
             @uvs.push [
               new THREE.UV(u, v),
@@ -37,7 +37,7 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!./resource"],
               new THREE.UV(u + deltaU, v + deltaV),
               new THREE.UV(u + deltaU, v)
             ]
-        console.log mapJson.layers
+
         for layer in mapJson.layers.reverse()
           if layer.type isnt "tilelayer" then continue
 
@@ -60,10 +60,7 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!./resource"],
 
           mesh = new THREE.Mesh plane, new THREE.MeshFaceMaterial
           mesh.rotation.x = -Math.PI / 2
-          console.log mapJson
-
           @scene.add(mesh)
-          console.log mesh
 
     return {
       Tilemap: Tilemap
