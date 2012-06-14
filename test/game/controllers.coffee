@@ -60,6 +60,9 @@ define deps, ($, THREE, Stats, views, resource) ->
         t += 10
         accumulator -= 10
 
+      @camera.position.x = Math.floor(@camera.position.x)
+      @camera.position.y = Math.floor(@camera.position.y)
+
       @draw()
 
       @stats.end()
