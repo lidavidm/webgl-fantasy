@@ -1,5 +1,6 @@
-deps = ["use!use/jquery", "use!use/Three", "cs!./views", "cs!./resource"]
-define deps, ($, THREE, views, resource) ->
+deps = ["use!use/jquery", "use!use/Three", "use!use/Stats"
+  "cs!./views", "cs!./resource"]
+define deps, ($, THREE, Stats, views, resource) ->
 
   WIDTH = 320
   HEIGHT = 320
@@ -30,7 +31,12 @@ define deps, ($, THREE, views, resource) ->
 
       @cameraView = new views.Camera @renderer, @scene, @camera
 
-      @nextGameTick = (new Date).getTime()
+      @stats = new Stats
+      @stats.setMode 0
+      @stats.domElement.style.position = 'absolute'
+      @stats.domElement.style.left = '0px'
+      @stats.domElement.style.top = '0px'
+      $(document.body).append @stats.domElement
 
     draw: ->
       @renderer.render this.scene, this.camera
@@ -40,6 +46,7 @@ define deps, ($, THREE, views, resource) ->
       @cameraView.update()
 
     animate: (currentTime = (new Date).getTime(), accumulator = 0) =>
+      @stats.begin()
       # based on http://gafferongames.com/game-physics/fix-your-timestep/
       newTime = (new Date).getTime()
       frameTime = newTime - currentTime
@@ -54,6 +61,8 @@ define deps, ($, THREE, views, resource) ->
         accumulator -= 10
 
       @draw()
+
+      @stats.end()
 
       window.webkitRequestAnimationFrame =>  # TODO: requestAnimationFrame shim!
         this.animate currentTime, accumulator

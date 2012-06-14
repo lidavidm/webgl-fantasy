@@ -11,6 +11,10 @@ require.config({
             attach: "THREE"
         },
 
+        "use/Stats": {
+            attach: "Stats"
+        },
+
         "use/jquery": {
             attach: "$"
         },
