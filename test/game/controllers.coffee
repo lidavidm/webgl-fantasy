@@ -57,12 +57,12 @@ define deps, ($, THREE, Stats, views, resource) ->
 
       if (frameTime > 250) then frameTime = 250
 
-      accumulator += frameTime
+      dt = 33
 
-      while accumulator >= 10
+      accumulator += frameTime
+      while accumulator >= dt
         @update()
-        t += 10
-        accumulator -= 10
+        accumulator -= dt
 
       @camera.position.x = Math.floor(@camera.position.x)
       @camera.position.y = Math.floor(@camera.position.y)
@@ -72,7 +72,7 @@ define deps, ($, THREE, Stats, views, resource) ->
       @stats.end()
 
       window.webkitRequestAnimationFrame =>  # TODO: requestAnimationFrame shim!
-        this.animate currentTime, accumulator
+        this.animate newTime, accumulator
 
       
 

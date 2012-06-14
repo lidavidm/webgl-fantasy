@@ -21,12 +21,12 @@ define deps, ($, THREE, Backbone, resource) ->
       @scene.add @sprite
 
       @mod = 0
-      @skip = 1000
+      @skip = 30
 
     update: =>
       @skip -= 1
       if @skip is 0
-        @skip = 1000
+        @skip = 30
         @mod = (@mod + 1) % 8
         @sprite.uvOffset.x = @mod / 8
 
