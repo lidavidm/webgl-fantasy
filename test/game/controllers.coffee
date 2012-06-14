@@ -28,6 +28,9 @@ define deps, ($, THREE, Stats, views, resource) ->
         @appView = new views.Tilemap @renderer, @scene,
           new resource.Resource "res/", data
         @loading.resolve()
+  
+      @characterView = new views.Character @renderer, @scene,
+        new resource.Resource "res/", THREE.ImageUtils.loadTexture "res/fighter.png"
 
       @cameraView = new views.Camera @renderer, @scene, @camera
 
@@ -44,6 +47,7 @@ define deps, ($, THREE, Stats, views, resource) ->
     update: ->
       @appView.update()
       @cameraView.update()
+      @characterView.update()
 
     animate: (currentTime = (new Date).getTime(), accumulator = 0) =>
       @stats.begin()

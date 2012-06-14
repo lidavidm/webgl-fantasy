@@ -26,6 +26,5 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
       update: =>
         @camera.position.x += @velocity[0]
         @camera.position.y += @velocity[1]
-        console.log(@velocity)
 
     return { Camera: Camera }
