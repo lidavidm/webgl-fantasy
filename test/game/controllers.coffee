@@ -28,6 +28,8 @@ define deps, ($, THREE, views, resource) ->
           new resource.Resource "res/", data
         @loading.resolve()
 
+      @cameraView = new views.Camera @renderer, @scene, @camera
+
       @nextGameTick = (new Date).getTime()
 
     draw: ->
@@ -35,22 +37,28 @@ define deps, ($, THREE, views, resource) ->
 
     update: ->
       @appView.update()
+      @cameraView.update()
 
-    animate: =>
-      # Based on https://github.com/jsermeno/ballGame/blob/master/public/js/controllers/appController.js
-      loops = 0
+    animate: (currentTime = (new Date).getTime(), accumulator = 0) =>
+      # based on http://gafferongames.com/game-physics/fix-your-timestep/
+      newTime = (new Date).getTime()
+      frameTime = newTime - currentTime
 
-      while (new Date).getTime() > @nextGameTick and loops < MAX_FRAME_SKIP
+      if (frameTime > 250) then frameTime = 250
+
+      accumulator += frameTime
+
+      while accumulator >= 10
         @update()
-        nextGameTick += SKIP_TICKS
-        loops++
-
-      if loops == MAX_FRAME_SKIP
-        nextGameTick = (new Date).getTime()
-
+        t += 10
+        accumulator -= 10
 
       @draw()
-      window.webkitRequestAnimationFrame this.animate  # TODO: rAF shim!
+
+      window.webkitRequestAnimationFrame =>  # TODO: requestAnimationFrame shim!
+        this.animate currentTime, accumulator
+
+      
 
   return {
     App: App
