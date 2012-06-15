@@ -22,15 +22,17 @@ define deps, ($, THREE, Stats, views, resource) ->
       @renderer.setClearColorHex 0x000000, 1
       $(document.body).append @renderer.domElement
 
-      @loading = new $.Deferred
+      @loading = [new $.Deferred, new $.Deferred]
   
       $.getJSON "res/test2.json", (data) =>
         @appView = new views.Tilemap @renderer, @scene,
           new resource.Resource "res/", data
-        @loading.resolve()
-  
-      @characterView = new views.Character @renderer, @scene,
-        new resource.Resource "res/", THREE.ImageUtils.loadTexture "res/fighter.png"
+        @loading[0].resolve()
+
+      @texture = THREE.ImageUtils.loadTexture "res/fighter.png", undefined, =>
+        @characterView = new views.Character @renderer, @scene,
+          new resource.Resource "res/", @texture
+        @loading[1].resolve()
 
       @cameraView = new views.Camera @renderer, @scene, @camera
 

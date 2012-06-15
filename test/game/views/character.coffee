@@ -1,15 +1,16 @@
-deps = ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
-define deps, ($, THREE, Backbone, resource) ->
+deps = ["use!use/jquery", "use!use/Three", "use!use/backbone",
+  "cs!../resource", "cs!../sprite-animation"]
+define deps, ($, THREE, Backbone, resource, animation) ->
   class Character extends Backbone.View
-    initialize: (@renderer, @scene, sprite) ->
+    constructor: (@renderer, @scene, sprite) ->
       @setElement @renderer.domElement
       super()
 
       @width = 32
       @height = 32
-      console.log sprite.data
 
       texture = sprite.data
+      console.log texture.image
 
       @sprite = new THREE.Sprite
         map: texture
@@ -17,17 +18,18 @@ define deps, ($, THREE, Backbone, resource) ->
       @sprite.position.set(100, 100, 0)
       @sprite.scale.x = @sprite.scale.y = 1 / 8
       @sprite.uvScale.x = 1 / 8
-      @sprite.uvOffset.x = 1/ 4
+      @sprite.uvOffset.x = 1/ 8
       @scene.add @sprite
 
-      @mod = 0
+      @animation = new animation.SpriteFrameAnimation @sprite, texture, 32, 32
+      @animation.addGroup "test", [0, 0], [1, 0]
+      @animation.switchGroup "test"
       @skip = 30
 
     update: =>
       @skip -= 1
-      if @skip is 0
+      if @skip <= 0
         @skip = 30
-        @mod = (@mod + 1) % 8
-        @sprite.uvOffset.x = @mod / 8
+        @animation.next()
 
   return { Character: Character }

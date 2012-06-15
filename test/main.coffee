@@ -1,8 +1,8 @@
-define ["cs!game/controllers"], (controllers) ->
+define ["use!use/jquery", "cs!game/controllers"], ($, controllers) ->
   {
     main: ->
       console.log("Coffee main")
       app = new controllers.App
-      app.loading.done ->
+      $.when(app.loading...).then ->
         app.animate()
   }

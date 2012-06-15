@@ -1,7 +1,7 @@
 define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"],
   ($, THREE, Backbone, resource) ->
     class Camera extends Backbone.View
-      initialize: (@renderer, @scene, @camera) ->
+      constructor: (@renderer, @scene, @camera) ->
         @setElement @renderer.domElement
         super()
         $(document.body).keydown(@keydown)
