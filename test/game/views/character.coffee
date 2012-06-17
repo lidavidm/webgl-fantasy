@@ -14,11 +14,10 @@ define deps, ($, THREE, Backbone, _, resource, animation, keystate) ->
 
       @sprite = new THREE.Sprite
         map: texture
-        useScreenCoordinates: true
-      @sprite.position.set(100, 100, 0)
+        useScreenCoordinates: false
+        scaleByViewport: true
       @sprite.scale.x = @sprite.scale.y = 1 / 8
       @sprite.uvScale.x = 1 / 8
-      @sprite.uvOffset.x = 1/ 8
       @scene.add @sprite
 
       @animation = new animation.SpriteFrameAnimation @sprite, texture, 32, 32
@@ -36,20 +35,28 @@ define deps, ($, THREE, Backbone, _, resource, animation, keystate) ->
       @keyState = new keystate.KeyState
       @keyState.on "keydown", (keyCode) =>
         switch keyCode
-          when 38 then @animation.switchGroup "up"
-          when 40 then @animation.switchGroup "down"
-          when 37 then @animation.switchGroup "left"
-          when 39 then @animation.switchGroup "right"
+          when 38
+            @animation.switchGroup "up"
+            @velocity[1] = -1
+          when 40
+            @animation.switchGroup "down"
+            @velocity[1] = 1
+          when 37
+            @animation.switchGroup "left"
+            @velocity[0] = -1
+          when 39
+            @animation.switchGroup "right"
+            @velocity[0] = 1
         if 37 <= keyCode <= 40
           @moving = true
           @skip = 0
 
       @keyState.on "keyup", (keyCode) =>
         if 37 <= keyCode <= 40
+          if keyCode is 37 or keyCode is 39 then @velocity[0] = 0
+          if keyCode is 38 or keyCode is 40 then @velocity[1] = 0
           states = (@keyState.isDown key for key in [37..40])
-          console.log(states, _.any(states))
           if not (_.any(@keyState.isDown key for key in [37..40]))
-            console.log "stop"
             @moving = false
 
       @moving = false
@@ -60,6 +67,8 @@ define deps, ($, THREE, Backbone, _, resource, animation, keystate) ->
 
     update: =>
       if @moving
+        @sprite.position.x += @velocity[0]
+        @sprite.position.y += @velocity[1]
         @skip -= 1
         if @skip <= 0
           @skip = 6

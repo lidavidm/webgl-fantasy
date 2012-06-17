@@ -40,14 +40,15 @@ define deps, ($, THREE, Stats, views, resource) ->
       @stats.setMode 0
       @stats.domElement.style.position = 'absolute'
       @stats.domElement.style.left = '0px'
-      @stats.domElement.style.top = '0px'
+      @stats.domElement.style.top = '320px'
       $(document.body).append @stats.domElement
+
+      @overflow = [0, 0]
 
     draw: ->
       @renderer.render this.scene, this.camera
 
     update: ->
-      @appView.update()
       @cameraView.update()
       @characterView.update()
 
@@ -65,9 +66,6 @@ define deps, ($, THREE, Stats, views, resource) ->
       while accumulator >= dt
         @update()
         accumulator -= dt
-
-      @camera.position.x = Math.floor(@camera.position.x)
-      @camera.position.y = Math.floor(@camera.position.y)
 
       @draw()
 
