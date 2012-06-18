@@ -2,9 +2,8 @@ deps = ["use!use/jquery", "use!use/Three", "use!use/backbone", "use!use/undersco
   "cs!../resource", "cs!../sprite-animation", "cs!../event-keystate"]
 define deps, ($, THREE, Backbone, _, resource, animation, keystate) ->
   class Character extends Backbone.View
-    constructor: (@renderer, @scene, sprite) ->
+    initialize: (@renderer, @scene, sprite) ->
       @setElement @renderer.domElement
-      super()
 
       @width = 32
       @height = 32
