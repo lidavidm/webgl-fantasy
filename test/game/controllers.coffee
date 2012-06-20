@@ -1,6 +1,6 @@
 deps = ["use!use/jquery", "use!use/Three", "use!use/Stats"
-  "cs!./views", "cs!./resource"]
-define deps, ($, THREE, Stats, views, resource) ->
+  "cs!./views", "cs!./resource", "cs!./event-keystate"]
+define deps, ($, THREE, Stats, views, resource, keystate) ->
 
   WIDTH = 320
   HEIGHT = 320
@@ -22,19 +22,23 @@ define deps, ($, THREE, Stats, views, resource) ->
       @renderer.setClearColorHex 0x000000, 1
       $(document.body).append @renderer.domElement
 
+      @keyState = new keystate.KeyState
+      $(document.body).keydown @keydown
+      $(document.body).keyup @keyup
+
       @loading = [new $.Deferred, new $.Deferred]
   
       $.getJSON "res/test2.json", (data) =>
-        @appView = new views.Tilemap @renderer, @scene,
+        @appView = new views.Tilemap @, @renderer, @scene,
           new resource.Resource "res/", data
         @loading[0].resolve()
 
       @texture = THREE.ImageUtils.loadTexture "res/fighter.png", undefined, =>
-        @characterView = new views.Character @renderer, @scene,
+        @characterView = new views.Character @, @renderer, @scene,
           new resource.Resource "res/", @texture
         @loading[1].resolve()
 
-      @cameraView = new views.Camera @renderer, @scene, @camera
+      @cameraView = new views.Camera @, @renderer, @scene, @camera
 
       @stats = new Stats
       @stats.setMode 0
@@ -44,6 +48,10 @@ define deps, ($, THREE, Stats, views, resource) ->
       $(document.body).append @stats.domElement
 
       @overflow = [0, 0]
+
+    keydown: (e) => @keyState.down(e)
+
+    keyup: (e) => @keyState.up(e)
 
     draw: ->
       @renderer.render this.scene, this.camera

@@ -1,8 +1,8 @@
 deps = ["use!use/jquery", "use!use/Three", "use!use/backbone", "use!use/underscore",
-  "cs!../resource", "cs!../sprite-animation", "cs!../event-keystate"]
-define deps, ($, THREE, Backbone, _, resource, animation, keystate) ->
+  "cs!../resource", "cs!../sprite-animation"]
+define deps, ($, THREE, Backbone, _, resource, animation) ->
   class Character extends Backbone.View
-    initialize: (@renderer, @scene, sprite) ->
+    initialize: (@controller, @renderer, @scene, sprite) ->
       @setElement @renderer.domElement
 
       @width = 32
@@ -26,13 +26,9 @@ define deps, ($, THREE, Backbone, _, resource, animation, keystate) ->
       @animation.addGroup "left", [4, 0], [5, 0]
       @animation.addGroup "right", [6, 0], [7, 0]
       @skip = 0
-  
-      $(document.body).keydown @keydown
-      $(document.body).keyup @keyup
       @velocity = [0, 0]
-
-      @keyState = new keystate.KeyState
-      @keyState.on "keydown", (keyCode) =>
+  
+      @controller.keyState.on "keydown", (keyCode) =>
         switch keyCode
           when 38
             @animation.switchGroup "up"
@@ -50,24 +46,21 @@ define deps, ($, THREE, Backbone, _, resource, animation, keystate) ->
           @moving = true
           @skip = 0
 
-      @keyState.on "keyup", (keyCode) =>
+      @controller.keyState.on "keyup", (keyCode) =>
         if 37 <= keyCode <= 40
           if keyCode is 37 or keyCode is 39 then @velocity[0] = 0
           if keyCode is 38 or keyCode is 40 then @velocity[1] = 0
-          states = (@keyState.isDown key for key in [37..40])
-          if not (_.any(@keyState.isDown key for key in [37..40]))
+          states = (@controller.keyState.isDown key for key in [37..40])
+          if not (_.any(@controller.keyState.isDown key for key in [37..40]))
             @moving = false
 
       @moving = false
-
-    keydown: (e) => @keyState.down(e)
-
-    keyup: (e) => @keyState.up(e)
 
     update: =>
       if @moving
         @sprite.position.x += @velocity[0]
         @sprite.position.y += @velocity[1]
+        @controller.cameraView.setPosition @sprite.position
         @skip -= 1
         if @skip <= 0
           @skip = 6

@@ -2,7 +2,7 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
   ($, THREE, Backbone, resource) ->
     class Tilemap extends Backbone.View
 
-      initialize: (@renderer, @scene, mapJson) ->
+      initialize: (@controller, @renderer, @scene, mapJson) ->
         @setElement @renderer.domElement
         @initializeMap(mapJson)
         $(document.body).keydown(@key)
