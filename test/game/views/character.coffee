@@ -17,6 +17,7 @@ define deps, ($, THREE, Backbone, _, resource, animation) ->
         scaleByViewport: true
       @sprite.scale.x = @sprite.scale.y = 1 / 8
       @sprite.uvScale.x = 1 / 8
+      @sprite.position.z = 0
       @scene.add @sprite
 
       @animation = new animation.SpriteFrameAnimation @sprite, texture, 32, 32
@@ -32,10 +33,10 @@ define deps, ($, THREE, Backbone, _, resource, animation) ->
         switch keyCode
           when 38
             @animation.switchGroup "up"
-            @velocity[1] = -1
+            @velocity[1] = 1
           when 40
             @animation.switchGroup "down"
-            @velocity[1] = 1
+            @velocity[1] = -1
           when 37
             @animation.switchGroup "left"
             @velocity[0] = -1
@@ -61,6 +62,7 @@ define deps, ($, THREE, Backbone, _, resource, animation) ->
         @sprite.position.x += @velocity[0]
         @sprite.position.y += @velocity[1]
         @controller.cameraView.setPosition @sprite.position
+        $("#console").html @sprite.position.x.toString() + "," + @sprite.position.y.toString()
         @skip -= 1
         if @skip <= 0
           @skip = 6

@@ -40,6 +40,7 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
               new THREE.UV(u + deltaU, v)
             ]
 
+        position = 0
         for layer in mapJson.layers.reverse()
           if layer.type isnt "tilelayer" then continue
 
@@ -61,7 +62,8 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
           plane.materials[1] = new THREE.MeshBasicMaterial { map: ts }
 
           mesh = new THREE.Mesh plane, new THREE.MeshFaceMaterial
-          mesh.rotation.x = -Math.PI / 2
+          mesh.rotation.x = Math.PI / 2
+          mesh.position.z = position
           @scene.add(mesh)
   
     return { Tilemap: Tilemap }

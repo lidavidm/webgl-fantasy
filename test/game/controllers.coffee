@@ -11,8 +11,8 @@ define deps, ($, THREE, Stats, views, resource, keystate) ->
 
   class App
     constructor: ->
-      @camera = new THREE.OrthographicCamera -WIDTH / 2, WIDTH / 2, -HEIGHT /
-        2, HEIGHT / 2, 0, 100
+      @camera = new THREE.OrthographicCamera -WIDTH / 2, WIDTH / 2, HEIGHT /
+        2, -HEIGHT / 2, 0, 100
 
       @scene = new THREE.Scene
       @scene.add @camera
