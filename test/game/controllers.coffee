@@ -10,13 +10,16 @@ define deps, ($, THREE, Stats, views, resource, keystate) ->
   SKIP_TICKS = 1000 / FPS
 
   class ZScene
-    constructor: (@camera) ->
+    constructor: (@camera, numScenes) ->
       @scenes = []
+      for i in [0...numScenes]
+        @scenes.push new THREE.Scene()
+
+      @scenes[numScenes - 1].add @camera
 
     add: (object, z = 0) ->
-      if not @scenes[z]?
-        @scenes[z] = new THREE.Scene
-
+      if not @scenes[z] then throw console.error "z out of range: " + z
+  
       @scenes[z].add object
           
 
@@ -25,7 +28,7 @@ define deps, ($, THREE, Stats, views, resource, keystate) ->
       @camera = new THREE.OrthographicCamera -WIDTH / 2, WIDTH / 2, HEIGHT /
         2, -HEIGHT / 2, 0, 100
 
-      @scene = new ZScene @camera
+      @scene = new ZScene @camera, 3
 
       @renderer = new THREE.WebGLRenderer { antialias: true }
       @renderer.setSize WIDTH, HEIGHT

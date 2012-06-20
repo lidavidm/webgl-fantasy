@@ -42,6 +42,7 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
 
         position = 0
         for layer in mapJson.layers.reverse()
+          if layer.type is "objectlayer" then @parseObjects layer
           if layer.type isnt "tilelayer" then continue
 
           plane = new THREE.PlaneGeometry(
@@ -65,5 +66,8 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
           mesh.rotation.x = Math.PI / 2
           @scene.add(mesh, position)
           position += 2
+
+      parseObjects: (layerData) ->
+        console.log layerData
   
     return { Tilemap: Tilemap }
