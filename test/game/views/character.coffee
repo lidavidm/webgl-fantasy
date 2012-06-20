@@ -18,7 +18,7 @@ define deps, ($, THREE, Backbone, _, resource, animation) ->
       @sprite.scale.x = @sprite.scale.y = 1 / 8
       @sprite.uvScale.x = 1 / 8
       @sprite.position.z = 0
-      @scene.add @sprite
+      @scene.add @sprite, 1
 
       @animation = new animation.SpriteFrameAnimation @sprite, texture, 32, 32
       @animation.addGroup "up", [0, 0], [1, 0]

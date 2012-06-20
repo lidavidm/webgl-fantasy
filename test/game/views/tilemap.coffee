@@ -63,7 +63,7 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
 
           mesh = new THREE.Mesh plane, new THREE.MeshFaceMaterial
           mesh.rotation.x = Math.PI / 2
-          mesh.position.z = position
-          @scene.add(mesh)
+          @scene.add(mesh, position)
+          position += 2
   
     return { Tilemap: Tilemap }

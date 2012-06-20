@@ -9,17 +9,28 @@ define deps, ($, THREE, Stats, views, resource, keystate) ->
   MAX_FRAME_SKIP = 10
   SKIP_TICKS = 1000 / FPS
 
+  class ZScene
+    constructor: (@camera) ->
+      @scenes = []
+
+    add: (object, z = 0) ->
+      if not @scenes[z]?
+        @scenes[z] = new THREE.Scene
+
+      @scenes[z].add object
+          
+
   class App
     constructor: ->
       @camera = new THREE.OrthographicCamera -WIDTH / 2, WIDTH / 2, HEIGHT /
         2, -HEIGHT / 2, 0, 100
 
-      @scene = new THREE.Scene
-      @scene.add @camera
+      @scene = new ZScene @camera
 
       @renderer = new THREE.WebGLRenderer { antialias: true }
       @renderer.setSize WIDTH, HEIGHT
       @renderer.setClearColorHex 0x000000, 1
+      @renderer.autoClear = false
       $(document.body).append @renderer.domElement
 
       @keyState = new keystate.KeyState
@@ -54,7 +65,13 @@ define deps, ($, THREE, Stats, views, resource, keystate) ->
     keyup: (e) => @keyState.up(e)
 
     draw: ->
-      @renderer.render this.scene, this.camera
+      @renderer.clear()
+      scenes = []
+      for scene in @scene.scenes
+        if scene?
+          scenes.push scene
+      for scene in scenes.reverse()
+        @renderer.render scene, @camera
 
     update: ->
       @cameraView.update()
