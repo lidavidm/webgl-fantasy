@@ -2,25 +2,26 @@ deps = ["use!use/jquery", "use!use/Three", "use!use/backbone", "use!use/undersco
   "cs!../resource", "cs!../sprite-animation"]
 define deps, ($, THREE, Backbone, _, resource, animation) ->
   class Character extends Backbone.View
-    initialize: (@controller, @renderer, @scene, sprite) ->
+    initialize: (@controller, @renderer, @scene, @texture) ->
       @setElement @renderer.domElement
 
       @width = 32
       @height = 32
 
-      texture = sprite.data
-      console.log texture.image
+      @texture.done @initializeSprite
+      @deferred = @texture.deferred
 
+    initializeSprite: =>
       @sprite = new THREE.Sprite
-        map: texture
+        map: @texture.data
         useScreenCoordinates: false
         scaleByViewport: true
       @sprite.scale.x = @sprite.scale.y = 1 / 8
       @sprite.uvScale.x = 1 / 8
-      @sprite.position.z = 0
+      @sprite.position.y = 32
       @scene.add @sprite, 1
 
-      @animation = new animation.SpriteFrameAnimation @sprite, texture, 32, 32
+      @animation = new animation.SpriteFrameAnimation @sprite, @texture.data, 32, 32
       @animation.addGroup "up", [0, 0], [1, 0]
       @animation.switchGroup "up"
       @animation.addGroup "down", [2, 0], [3, 0]

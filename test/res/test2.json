@@ -10,7 +10,7 @@
          "width":5,
          "x":0,
          "y":0
-        }, 
+        },
         {
          "height":5,
          "name":"Object Layer 1",
@@ -20,7 +20,7 @@
                  "name":"",
                  "properties":
                     {
-
+                        "collision": true
                     },
                  "type":"",
                  "width":160,
@@ -33,7 +33,7 @@
          "width":5,
          "x":0,
          "y":0
-        }, 
+        },
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3],
          "height":5,

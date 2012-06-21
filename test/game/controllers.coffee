@@ -21,38 +21,20 @@ define deps, ($, THREE, Stats, views, resource, keystate) ->
       if not @scenes[z] then throw console.error "z out of range: " + z
   
       @scenes[z].add object
-          
 
-  class App
+
+  class Controller
     constructor: ->
       @camera = new THREE.OrthographicCamera -WIDTH / 2, WIDTH / 2, HEIGHT /
         2, -HEIGHT / 2, 0, 100
 
-      @scene = new ZScene @camera, 3
+      @scene = new ZScene @camera, 4
 
       @renderer = new THREE.WebGLRenderer { antialias: true }
       @renderer.setSize WIDTH, HEIGHT
       @renderer.setClearColorHex 0x000000, 1
       @renderer.autoClear = false
       $(document.body).append @renderer.domElement
-
-      @keyState = new keystate.KeyState
-      $(document.body).keydown @keydown
-      $(document.body).keyup @keyup
-
-      @loading = [new $.Deferred, new $.Deferred]
-  
-      $.getJSON "res/test2.json", (data) =>
-        @appView = new views.Tilemap @, @renderer, @scene,
-          new resource.Resource "res/", data
-        @loading[0].resolve()
-
-      @texture = THREE.ImageUtils.loadTexture "res/fighter.png", undefined, =>
-        @characterView = new views.Character @, @renderer, @scene,
-          new resource.Resource "res/", @texture
-        @loading[1].resolve()
-
-      @cameraView = new views.Camera @, @renderer, @scene, @camera
 
       @stats = new Stats
       @stats.setMode 0
@@ -61,7 +43,17 @@ define deps, ($, THREE, Stats, views, resource, keystate) ->
       @stats.domElement.style.top = '320px'
       $(document.body).append @stats.domElement
 
-      @overflow = [0, 0]
+      @keyState = new keystate.KeyState
+      $(document.body).keydown @keydown
+      $(document.body).keyup @keyup
+
+      @loading = []
+      @views = []
+
+    addView: (klass, args...) ->
+      view = new klass @, @renderer, @scene, args...
+      @loading.push view.deferred
+      @views.push view
 
     keydown: (e) => @keyState.down(e)
 
@@ -77,8 +69,8 @@ define deps, ($, THREE, Stats, views, resource, keystate) ->
         @renderer.render scene, @camera
 
     update: ->
-      @cameraView.update()
-      @characterView.update()
+      for view in @views
+        view.update()
 
     animate: (currentTime = (new Date).getTime(), accumulator = 0) =>
       @stats.begin()
@@ -101,8 +93,20 @@ define deps, ($, THREE, Stats, views, resource, keystate) ->
 
       window.webkitRequestAnimationFrame =>  # TODO: requestAnimationFrame shim!
         this.animate newTime, accumulator
+          
 
-      
+  class App extends Controller
+    constructor: ->
+      super()
+
+      @addView views.Tilemap, resource.loadJSON "res/test2.json"
+      @addView views.Character, resource.loadTexture "res/fighter.png"
+      @addView views.Camera, @camera
+
+      @texture = THREE.ImageUtils.loadTexture "res/fighter.png", undefined, =>
+        @characterView = new views.Character @, @renderer, @scene,
+          new resource.Resource "res/", @texture
+        @loading[1].resolve()
 
   return {
     App: App
