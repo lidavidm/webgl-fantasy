@@ -2,17 +2,16 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
   ($, THREE, Backbone, resource) ->
     class Tilemap extends Backbone.View
 
-      initialize: (@controller, @renderer, @scene, mapJson) ->
+      initialize: (@controller, @renderer, @scene, map) ->
         @setElement @renderer.domElement
-        @initializeMap(mapJson)
-        $(document.body).keydown(@key)
-        $(document.body).keyup(@key)
+        @objects = []
+        map.done =>
+          @initializeMap(map.path, map.data)
+        @deferred = map.deferred
 
       update: =>
 
-      initializeMap: (mapJson) ->
-        [path, mapJson] = [mapJson.path, mapJson.data]
-
+      initializeMap: (path, mapJson) ->
         [@height, @width] = [mapJson.height, mapJson.width]
         [@tileHeight, @tileWidth] = [mapJson.tileheight, mapJson.tilewidth]
   
@@ -42,7 +41,7 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
 
         position = 0
         for layer in mapJson.layers.reverse()
-          if layer.type is "objectlayer" then @parseObjects layer
+          if layer.type is "objectgroup" then @parseObjects layer
           if layer.type isnt "tilelayer" then continue
 
           plane = new THREE.PlaneGeometry(
@@ -65,9 +64,23 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
           mesh = new THREE.Mesh plane, new THREE.MeshFaceMaterial
           mesh.rotation.x = Math.PI / 2
           @scene.add(mesh, position)
-          position += 2
+          position += 1
 
       parseObjects: (layerData) ->
-        console.log layerData
+        pixelWidth = @width * @tileWidth
+        pixelHeight = @height * @tileHeight
+        for object in layerData.objects
+          object.y -= (pixelHeight / 2) - (object.height / 2)
+          @objects.push object
+          plane = new THREE.PlaneGeometry(object.width, object.height, 32, 32)
+          mesh = new THREE.Mesh plane, new THREE.MeshBasicMaterial {
+            color: 0xFF0000
+            wireframe: true
+            }
+          mesh.rotation.x = Math.PI / 2
+          mesh.position.x = object.x
+          mesh.position.y = object.y
+          @scene.add mesh, 2
+          
   
     return { Tilemap: Tilemap }
