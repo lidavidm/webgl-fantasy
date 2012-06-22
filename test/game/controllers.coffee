@@ -1,6 +1,6 @@
 deps = ["use!use/jquery", "use!use/Three", "use!use/Stats"
-  "cs!./views", "cs!./resource", "cs!./event-keystate"]
-define deps, ($, THREE, Stats, views, resource, keystate) ->
+  "cs!./views", "cs!./resource", "cs!./event-keystate", "cs!./collision"]
+define deps, ($, THREE, Stats, views, resource, keystate, collision) ->
 
   WIDTH = 320
   HEIGHT = 320
@@ -54,6 +54,7 @@ define deps, ($, THREE, Stats, views, resource, keystate) ->
       view = new klass @, @renderer, @scene, args...
       @loading.push view.deferred
       @views.push view
+      return view
 
     keydown: (e) => @keyState.down(e)
 
@@ -101,12 +102,13 @@ define deps, ($, THREE, Stats, views, resource, keystate) ->
 
       @addView views.Tilemap, resource.loadJSON "res/test2.json"
       @addView views.Character, resource.loadTexture "res/fighter.png"
-      @addView views.Camera, @camera
+      @cameraView = @addView views.Camera, @camera
 
       @texture = THREE.ImageUtils.loadTexture "res/fighter.png", undefined, =>
         @characterView = new views.Character @, @renderer, @scene,
           new resource.Resource "res/", @texture
-        @loading[1].resolve()
+
+      @collision = new collision.CollisionManager
 
   return {
     App: App

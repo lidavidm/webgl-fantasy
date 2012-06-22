@@ -31,20 +31,28 @@ define deps, ($, THREE, Backbone, _, resource, animation) ->
       @velocity = [0, 0]
   
       @controller.keyState.on "keydown", (keyCode) =>
+        collision = @controller.collision.collidesDirections {
+          x: @sprite.position.x, y: @sprite.position.y,
+          height: 32, width: 32 }
+        console.log collision.x, collision.y
         switch keyCode
           when 38
-            @animation.switchGroup "up"
-            @velocity[1] = 1
+            if collision.y isnt -1
+              @animation.switchGroup "up"
+              @velocity[1] = 2
           when 40
-            @animation.switchGroup "down"
-            @velocity[1] = -1
+            if collision.y isnt 1
+              @animation.switchGroup "down"
+              @velocity[1] = -2
           when 37
-            @animation.switchGroup "left"
-            @velocity[0] = -1
+            if collision.x isnt 1
+              @animation.switchGroup "left"
+              @velocity[0] = -2
           when 39
-            @animation.switchGroup "right"
-            @velocity[0] = 1
-        if 37 <= keyCode <= 40
+            if collision.x isnt -1
+              @animation.switchGroup "right"
+              @velocity[0] = 2
+        if @velocity[0] or @velocity[1]
           @moving = true
           @skip = 0
 
@@ -63,10 +71,15 @@ define deps, ($, THREE, Backbone, _, resource, animation) ->
         @sprite.position.x += @velocity[0]
         @sprite.position.y += @velocity[1]
         @controller.cameraView.setPosition @sprite.position
+        collision = @controller.collision.collidesDirections {
+          x: @sprite.position.x, y: @sprite.position.y,
+          height: 32, width: 32 }
+        @velocity[0] = 0 if collision.x * @velocity[0] < 0
+        @velocity[1] = 0 if collision.y * @velocity[1] < 0
         $("#console").html @sprite.position.x.toString() + "," + @sprite.position.y.toString()
         @skip -= 1
         if @skip <= 0
-          @skip = 6
+          @skip = 4
           @animation.next()
 
   return { Character: Character }

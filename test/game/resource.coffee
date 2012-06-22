@@ -30,7 +30,7 @@ define ["use!use/jquery", "use!use/Three"], ($, THREE) ->
   loadJSON = (url) ->
     path = Path.split(url)[0]
     resource = new Resource path
-    $.getJSON url, (data) ->
+    $.getJSON url, (new Date).getTime(), (data) ->
       resource.resolve data
       
     return resource
@@ -38,7 +38,7 @@ define ["use!use/jquery", "use!use/Three"], ($, THREE) ->
   loadTexture = (url) ->
     path = Path.split(url)[0]
     resource = new Resource path
-    texture = THREE.ImageUtils.loadTexture url, undefined, ->
+    texture = THREE.ImageUtils.loadTexture url, undefined, (image) ->
       resource.resolve texture
       
     return resource
