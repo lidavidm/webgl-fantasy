@@ -5,10 +5,6 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision) ->
   WIDTH = 320
   HEIGHT = 320
 
-  FPS = 30
-  MAX_FRAME_SKIP = 10
-  SKIP_TICKS = 1000 / FPS
-
   class ZScene
     constructor: (@camera, numScenes) ->
       @scenes = []
@@ -77,12 +73,10 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision) ->
 
       if (frameTime > 250) then frameTime = 250
 
-      dt = 33
-
       accumulator += frameTime
-      while accumulator >= dt
+      while accumulator >= 40
         @update()
-        accumulator -= dt
+        accumulator -= 40
 
       @draw()
 

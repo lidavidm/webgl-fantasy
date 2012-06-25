@@ -79,7 +79,7 @@ define deps, ($, THREE, Backbone, _, resource, animation) ->
         
         @skip -= 1
         if @skip <= 0
-          @skip = 4
+          @skip = 6
           @animation.next()
 
   return { Character: Character }
