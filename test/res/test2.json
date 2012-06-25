@@ -38,6 +38,18 @@
                  "width":32,
                  "x":192,
                  "y":128
+                }, 
+                {
+                 "height":32,
+                 "name":"",
+                 "properties":
+                    {
+                     "teleport":"cornelia"
+                    },
+                 "type":"teleport",
+                 "width":32,
+                 "x":224,
+                 "y":0
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -47,9 +59,20 @@
          "y":0
         }, 
         {
-         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0],
+         "data":[0, 0, 0, 0, 0, 0, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0, 10, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          "height":5,
          "name":"Tile Layer 2",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":10,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0],
+         "height":5,
+         "name":"Tile Layer 3",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
@@ -67,7 +90,7 @@
         {
          "firstgid":1,
          "image":"tileset32.png",
-         "imageheight":96,
+         "imageheight":128,
          "imagewidth":96,
          "margin":0,
          "name":"tileset32",

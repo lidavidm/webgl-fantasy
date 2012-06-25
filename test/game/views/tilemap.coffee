@@ -40,7 +40,7 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
             ]
 
         position = 0
-        for layer in mapJson.layers.reverse()
+        for layer in mapJson.layers
           if layer.type is "objectgroup" then @parseObjects layer
           if layer.type isnt "tilelayer" then continue
 
@@ -70,20 +70,26 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
         pixelWidth = @width * @tileWidth
         pixelHeight = @height * @tileHeight
         for object in layerData.objects
+          object.x -= (pixelWidth / 2) - (object.width / 2)
           object.y -= (pixelHeight / 2) - (object.height / 2)
+          object.y *= -1
           @objects.push object
           if object.properties["collision"]
+            object.x += 1
+            object.width -= 4
+            object.y -= 1
+            object.height -= 4
             @controller.collision.addRect object
             
-          # plane = new THREE.PlaneGeometry(object.width, object.height, 32, 32)
-          # mesh = new THREE.Mesh plane, new THREE.MeshBasicMaterial {
-          #   color: 0xFF0000
-          #   wireframe: true
-          #   }
-          # mesh.rotation.x = Math.PI / 2
-          # mesh.position.x = object.x
-          # mesh.position.y = object.y
-          # @scene.add mesh, 2
+          plane = new THREE.PlaneGeometry(object.width, object.height, 32, 32)
+          mesh = new THREE.Mesh plane, new THREE.MeshBasicMaterial {
+            color: 0xFF0000
+            wireframe: true
+            }
+          mesh.rotation.x = Math.PI / 2
+          mesh.position.x = object.x
+          mesh.position.y = object.y
+          @scene.add mesh, 2
           
   
     return { Tilemap: Tilemap }
