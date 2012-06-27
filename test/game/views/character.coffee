@@ -10,6 +10,7 @@ define deps, ($, THREE, Backbone, _, resource, animation) ->
 
       @texture.done @initializeSprite
       @deferred = @texture.deferred
+      @teleporting = false
 
     initializeSprite: =>
       @sprite = new THREE.Sprite
@@ -34,7 +35,6 @@ define deps, ($, THREE, Backbone, _, resource, animation) ->
         collision = @controller.collision.collidesDirections {
           x: @sprite.position.x + 2, y: @sprite.position.y + 2,
           height: 28, width: 28 }
-        console.log collision.x, collision.y
         switch keyCode
           when 38
             if collision.y isnt -1
@@ -52,6 +52,13 @@ define deps, ($, THREE, Backbone, _, resource, animation) ->
             if collision.x isnt -1
               @animation.switchGroup "right"
               @velocity[0] = 2
+          when 32
+            if @teleport? and not @teleporting
+              @controller.tilemap.changeTo(
+                resource.loadJSON(
+                  "res/" + @teleport + ".json?t="+((new Date).getTime())
+                ))
+              @teleporting = true
         if @velocity[0] or @velocity[1]
           @moving = true
           @skip = 0
@@ -78,8 +85,10 @@ define deps, ($, THREE, Backbone, _, resource, animation) ->
         @velocity[1] = 0 if collision.y * @velocity[1] < 0
         if collision.teleport?
           @controller.ui.overlay collision.teleport
+          @teleport = collision.teleport
         else
           @controller.ui.clearOverlay()
+          @teleport = null
 
         if @velocity[0] is 0 and @velocity[1] is 0
           @moving = false

@@ -5,6 +5,7 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
       initialize: (@controller, @renderer, @scene, map) ->
         @setElement @renderer.domElement
         @objects = []
+        @meshes = []
         map.done =>
           @initializeMap(map.path, map.data)
         @deferred = map.deferred
@@ -64,6 +65,7 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
           mesh = new THREE.Mesh plane, new THREE.MeshFaceMaterial
           mesh.rotation.x = Math.PI / 2
           @scene.add(mesh, position)
+          @meshes.push [mesh, position]
           position += 1
 
       parseObjects: (layerData) ->
@@ -90,6 +92,15 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
           # mesh.position.x = object.x
           # mesh.position.y = object.y
           # @scene.add mesh, 2
+
+      changeTo: (resource) ->
+        resource.done =>
+          @controller.collision.clear()
+          @objects = []
+          for mesh in @meshes
+            [mesh, layer] = mesh
+            @scene.remove mesh, layer
+          @initializeMap resource.path, resource.data
           
   
     return { Tilemap: Tilemap }

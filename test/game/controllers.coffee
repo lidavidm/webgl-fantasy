@@ -18,6 +18,11 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision) ->
   
       @scenes[z].add object
 
+    remove: (object, z) ->
+      if not @scenes[z] then throw console.error "z out of range: " + z
+
+      @scenes[z].remove object
+
 
   class Controller
     constructor: ->
@@ -104,7 +109,8 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision) ->
     constructor: ->
       super()
 
-      @addView views.Tilemap, resource.loadJSON ("res/test2.json?t="+(new Date).getTime())
+      @tilemap = @addView(views.Tilemap,
+        resource.loadJSON ("res/test2.json?t="+(new Date).getTime()))
       @addView views.Character, resource.loadTexture "res/fighter.png"
       @cameraView = @addView views.Camera, @camera
 

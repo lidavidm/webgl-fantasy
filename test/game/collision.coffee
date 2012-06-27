@@ -6,6 +6,9 @@ define
     addRect: (rect) ->
       @rects.push rect
 
+    clear: ->
+      @rects = []
+
     collidesAny: (rect) ->
       for rectC in @rects
         if @collides rectC, rect
