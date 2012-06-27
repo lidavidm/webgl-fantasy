@@ -14,7 +14,7 @@
  "orientation":"orthogonal",
  "properties":
     {
-
+     "start":"0,2"
     },
  "tileheight":32,
  "tilesets":[

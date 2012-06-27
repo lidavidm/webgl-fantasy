@@ -15,7 +15,7 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
       initializeMap: (path, mapJson) ->
         [@height, @width] = [mapJson.height, mapJson.width]
         [@tileHeight, @tileWidth] = [mapJson.tileheight, mapJson.tilewidth]
-  
+        @properties = mapJson["properties"]
         ts = THREE.ImageUtils.loadTexture(
           resource.Path.join path, mapJson.tilesets[0].image
         )
