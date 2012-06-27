@@ -76,6 +76,14 @@ define deps, ($, THREE, Backbone, _, resource, animation) ->
           height: 28, width: 28 }
         @velocity[0] = 0 if collision.x * @velocity[0] < 0
         @velocity[1] = 0 if collision.y * @velocity[1] < 0
+        if collision.teleport?
+          @controller.ui.overlay collision.teleport
+        else
+          @controller.ui.clearOverlay()
+
+        if @velocity[0] is 0 and @velocity[1] is 0
+          @moving = false
+          return
         
         @skip -= 1
         if @skip <= 0

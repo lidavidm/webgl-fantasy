@@ -21,6 +21,7 @@
   </object>
   <object type="teleport" x="224" y="0" width="32" height="32">
    <properties>
+    <property name="collision" value="true"/>
     <property name="teleport" value="cornelia"/>
    </properties>
   </object>

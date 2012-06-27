@@ -80,16 +80,16 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
             object.y -= 1
             object.height -= 4
             @controller.collision.addRect object
-            
-          plane = new THREE.PlaneGeometry(object.width, object.height, 32, 32)
-          mesh = new THREE.Mesh plane, new THREE.MeshBasicMaterial {
-            color: 0xFF0000
-            wireframe: true
-            }
-          mesh.rotation.x = Math.PI / 2
-          mesh.position.x = object.x
-          mesh.position.y = object.y
-          @scene.add mesh, 2
+
+          # plane = new THREE.PlaneGeometry(object.width, object.height, 32, 32)
+          # mesh = new THREE.Mesh plane, new THREE.MeshBasicMaterial {
+          #   color: 0xFF0000
+          #   wireframe: true
+          #   }
+          # mesh.rotation.x = Math.PI / 2
+          # mesh.position.x = object.x
+          # mesh.position.y = object.y
+          # @scene.add mesh, 2
           
   
     return { Tilemap: Tilemap }

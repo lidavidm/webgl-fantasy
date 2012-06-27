@@ -17,6 +17,10 @@ define
       
       for rectC in @rects
         if @collides rectC, rect
+          if rectC.properties?
+            for prop of rectC.properties
+              directions[prop] = rectC.properties[prop]
+              
           halfWidth = (rectC.width / 2) - 2
           halfHeight = (rectC.height / 2) - 2
           if rect.x - (rect.width / 2) >= rectC.x + halfWidth

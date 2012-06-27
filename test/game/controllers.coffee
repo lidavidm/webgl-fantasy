@@ -74,9 +74,9 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision) ->
       if (frameTime > 250) then frameTime = 250
 
       accumulator += frameTime
-      while accumulator >= 40
+      while accumulator >= 33
         @update()
-        accumulator -= 40
+        accumulator -= 33
 
       @draw()
 
@@ -90,7 +90,7 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision) ->
     constructor: ->
       super()
 
-      @addView views.Tilemap, resource.loadJSON "res/test2.json"
+      @addView views.Tilemap, resource.loadJSON ("res/test2.json?t="+(new Date).getTime())
       @addView views.Character, resource.loadTexture "res/fighter.png"
       @cameraView = @addView views.Camera, @camera
 
@@ -99,6 +99,8 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision) ->
           new resource.Resource "res/", @texture
 
       @collision = new collision.CollisionManager
+      
+      @ui = @addView views.WorldUI, $("#ui")
 
   return {
     App: App

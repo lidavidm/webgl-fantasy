@@ -44,6 +44,7 @@
                  "name":"",
                  "properties":
                     {
+                     "collision":"true",
                      "teleport":"cornelia"
                     },
                  "type":"teleport",
