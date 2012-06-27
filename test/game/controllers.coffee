@@ -83,10 +83,24 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision) ->
       @stats.end()
 
       window.webkitRequestAnimationFrame =>  # TODO: requestAnimationFrame shim!
-        this.animate newTime, accumulator
+        @animate newTime, accumulator
+
+    transition: (controller) ->
+      # Transition to a different controller within 1 frame
+      @animate = ->
+        controller.animate()
+      $(@renderer.domElement).remove()
+      $(@stats.domElement).remove()
+
+
+  class Title extends Controller
+    constructor: ->
+      super()
+
+      @ui = @addView views.TitleUI, $("#ui"), Overworld
           
 
-  class App extends Controller
+  class Overworld extends Controller
     constructor: ->
       super()
 
@@ -103,5 +117,6 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision) ->
       @ui = @addView views.WorldUI, $("#ui")
 
   return {
-    App: App
+    Title: Title,
+    Overworld: Overworld
   }
