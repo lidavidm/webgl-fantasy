@@ -101,6 +101,7 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
             [mesh, layer] = mesh
             @scene.remove mesh, layer
           @initializeMap resource.path, resource.data
-          
+          # since the character has already been loaded by now
+          @controller.character.setSpritePosition()
   
     return { Tilemap: Tilemap }

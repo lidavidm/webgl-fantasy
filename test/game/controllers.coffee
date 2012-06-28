@@ -111,7 +111,7 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision) ->
 
       @tilemap = @addView(views.Tilemap,
         resource.loadJSON ("res/test2.json?t="+(new Date).getTime()))
-      @addView views.Character, resource.loadTexture "res/fighter.png"
+      @character = @addView views.Character, resource.loadTexture "res/fighter.png"
       @cameraView = @addView views.Camera, @camera
 
       @texture = THREE.ImageUtils.loadTexture "res/fighter.png", undefined, =>

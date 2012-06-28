@@ -9,23 +9,6 @@ define deps, ($, THREE, Backbone, _, resource, animation) ->
       @height = 32
 
       @texture.done @initializeSprite
-      @finishedInitializing = new $.Deferred
-      @controller.tilemap.deferred.done =>
-        properties = @controller.tilemap.properties
-        x = 0
-        y = 0
-        if properties.start?
-          [x, y] = properties.start.split ","
-          x = parseInt x
-          y = parseInt y
-        pixelWidth = @controller.tilemap.width * @controller.tilemap.tileWidth
-        pixelHeight = @controller.tilemap.height * @controller.tilemap.tileHeight
-        @finishedInitializing.done =>
-          @sprite.position.x = x * 32
-          @sprite.position.y = y * 32
-          @sprite.position.x -= (pixelWidth / 2) - 16
-          @sprite.position.y -= (pixelHeight / 2) - 16
-          @sprite.position.y *= -1
         
       @deferred = @texture.deferred
       @teleporting = false
@@ -90,7 +73,24 @@ define deps, ($, THREE, Backbone, _, resource, animation) ->
             @moving = false
 
       @moving = false
-      @finishedInitializing.resolve()
+      
+      @controller.tilemap.deferred.done @setSpritePosition
+
+    setSpritePosition:  =>
+      properties = @controller.tilemap.properties
+      x = 0
+      y = 0
+      if properties.start?
+        [x, y] = properties.start.split ","
+        x = parseInt x
+        y = parseInt y
+      pixelWidth = @controller.tilemap.width * @controller.tilemap.tileWidth
+      pixelHeight = @controller.tilemap.height * @controller.tilemap.tileHeight
+      @sprite.position.x = x * 32
+      @sprite.position.y = y * 32
+      @sprite.position.x -= (pixelWidth / 2) - 16
+      @sprite.position.y -= (pixelHeight / 2) - 16
+      @sprite.position.y *= -1
 
     update: =>
       if @moving
