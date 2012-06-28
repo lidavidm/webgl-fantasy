@@ -4,11 +4,16 @@
   <property name="start" value="0,2"/>
  </properties>
  <tileset firstgid="1" name="tileset32" tilewidth="32" tileheight="32">
-  <image source="tileset32.png" width="96" height="128"/>
+  <image source="tileset32.png" width="256" height="128"/>
  </tileset>
  <layer name="Tile Layer 1" width="5" height="5">
   <data encoding="base64">
    AQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAA==
+  </data>
+ </layer>
+ <layer name="Tile Layer 2" width="5" height="5">
+  <data encoding="base64">
+   AAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==
   </data>
  </layer>
 </map>
