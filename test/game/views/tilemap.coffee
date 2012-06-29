@@ -8,7 +8,7 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
         @meshes = []
         map.done =>
           @initializeMap(map.path, map.data)
-        @deferred = map.deferred
+        @deferred = new $.Deferred
 
       update: =>
 
@@ -16,57 +16,65 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
         [@height, @width] = [mapJson.height, mapJson.width]
         [@tileHeight, @tileWidth] = [mapJson.tileheight, mapJson.tilewidth]
         @properties = mapJson["properties"]
-        ts = THREE.ImageUtils.loadTexture(
-          resource.Path.join path, mapJson.tilesets[0].image
-        )
+        @tilesets = []
+        for ts in mapJson.tilesets
+          @tilesets.push [resource.loadTexture(
+            resource.Path.join(path, ts.image)
+            ), [[
+            new THREE.UV(0, 0),
+            new THREE.UV(0, 1),
+            new THREE.UV(1, 1),
+            new THREE.UV(1, 0)
+            ]]]
+        console.log @tilesets
+        $.when((ts[0].deferred for ts in @tilesets)...).then =>
+          for ts in @tilesets
+            texture = ts[0] = ts[0].data
+            [deltaU, deltaV] = [@tileWidth / texture.image.width ,
+               @tileHeight / texture.image.height ]
 
-        @uvs = [[
-          new THREE.UV(0, 0),
-          new THREE.UV(0, 1),
-          new THREE.UV(1, 1),
-          new THREE.UV(1, 0)
-        ]]
+            for y in [0...texture.image.height / @tileHeight]
+              for x in [0...texture.image.width / @tileWidth]
+                [u, v] = [x * deltaU, y * deltaV]
+                ts[1].push [
+                  new THREE.UV(u, v),
+                  new THREE.UV(u, v + deltaV),
+                  new THREE.UV(u + deltaU, v + deltaV),
+                  new THREE.UV(u + deltaU, v)
+                ]
 
-        [deltaU, deltaV] = [@tileWidth / ts.image.width ,
-           @tileHeight / ts.image.height ]
+          @uvs = @tilesets[0][1]
+          ts = @tilesets[0][0]
 
-        for y in [0...ts.image.height / @tileHeight]
-          for x in [0...ts.image.width / @tileWidth]
-            [u, v] = [x * deltaU, y * deltaV]
-            @uvs.push [
-              new THREE.UV(u, v),
-              new THREE.UV(u, v + deltaV),
-              new THREE.UV(u + deltaU, v + deltaV),
-              new THREE.UV(u + deltaU, v)
-            ]
+          position = 0
+          for layer in mapJson.layers
+            if layer.type is "objectgroup" then @parseObjects layer
+            if layer.type isnt "tilelayer" then continue
 
-        position = 0
-        for layer in mapJson.layers
-          if layer.type is "objectgroup" then @parseObjects layer
-          if layer.type isnt "tilelayer" then continue
+            plane = new THREE.PlaneGeometry(
+              @width * @tileWidth, @height * @tileHeight, @width, @height
+            )
 
-          plane = new THREE.PlaneGeometry(
-            @width * @tileWidth, @height * @tileHeight, @width, @height
-          )
+            plane.faceVertexUvs[0] = (@uvs[x] for x in layer.data)
 
-          plane.faceVertexUvs[0] = (@uvs[x] for x in layer.data)
+            for i in [0...plane.faces.length]
+              if layer.data[i] is 0
+                plane.faces[i].materialIndex = 0
+              else
+                plane.faces[i].materialIndex = 1
+            plane.materials[0] = new THREE.MeshBasicMaterial
+              color: 0x000000,
+              opacity: 0
 
-          for i in [0...plane.faces.length]
-            if layer.data[i] is 0
-              plane.faces[i].materialIndex = 0
-            else
-              plane.faces[i].materialIndex = 1
-          plane.materials[0] = new THREE.MeshBasicMaterial
-            color: 0x000000,
-            opacity: 0
+            plane.materials[1] = new THREE.MeshBasicMaterial { map: ts }
 
-          plane.materials[1] = new THREE.MeshBasicMaterial { map: ts }
+            mesh = new THREE.Mesh plane, new THREE.MeshFaceMaterial
+            mesh.rotation.x = Math.PI / 2
+            @scene.add(mesh, position)
+            @meshes.push [mesh, position]
+            position += 1
 
-          mesh = new THREE.Mesh plane, new THREE.MeshFaceMaterial
-          mesh.rotation.x = Math.PI / 2
-          @scene.add(mesh, position)
-          @meshes.push [mesh, position]
-          position += 1
+          @deferred.resolve()
 
       parseObjects: (layerData) ->
         pixelWidth = @width * @tileWidth

@@ -22,7 +22,7 @@ define deps, ($, Backbone, _, resource) ->
         fontSize: "20px"
         }
 
-      @counter = 50
+      @counter = 10
 
     update: ->
       @counter -= 1

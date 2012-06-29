@@ -43,6 +43,21 @@
          "spacing":0,
          "tileheight":32,
          "tilewidth":32
+        }, 
+        {
+         "firstgid":33,
+         "image":"grass.png",
+         "imageheight":32,
+         "imagewidth":32,
+         "margin":0,
+         "name":"grass",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tileheight":32,
+         "tilewidth":32
         }],
  "tilewidth":32,
  "version":1,
