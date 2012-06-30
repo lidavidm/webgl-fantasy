@@ -78,6 +78,20 @@ define deps, ($, THREE, Backbone, _, resource, animation) ->
 
     setSpritePosition:  =>
       properties = @controller.tilemap.properties
+      @teleporting = false  # XXX shouldn’t this be in controller or something?
+
+      mapType = 'world'
+      if properties.type?
+        mapType = properties.type
+
+      if mapType is 'world'
+        @width = 16
+        @height = 16
+        @sprite.scale.x = @sprite.scale.y = 1 / 16
+      else
+        @width = 20
+        @height = 20
+        @sprite.scale.x = @sprite.scale.y = 1 / 8
       x = 0
       y = 0
       if properties.start?

@@ -38,7 +38,7 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision) ->
       $(document.body).append @renderer.domElement
 
       @stats = new Stats
-      @stats.setMode 1
+      @stats.setMode 0
       @stats.domElement.style.position = 'absolute'
       @stats.domElement.style.left = '0px'
       @stats.domElement.style.top = '320px'
