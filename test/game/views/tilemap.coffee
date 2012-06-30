@@ -20,13 +20,15 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
         for ts in mapJson.tilesets
           @tilesets.push [resource.loadTexture(
             resource.Path.join(path, ts.image)
-            ), [[
-            new THREE.UV(0, 0),
-            new THREE.UV(0, 1),
-            new THREE.UV(1, 1),
-            new THREE.UV(1, 0)
-            ]]]
-        console.log @tilesets
+            ), []]
+        # Only the first tileset needs a padding tile since TMX is
+        # zero-indexed
+        @tilesets[0][1].push [
+          new THREE.UV(0, 0),
+          new THREE.UV(0, 1),
+          new THREE.UV(1, 1),
+          new THREE.UV(1, 0)
+          ]
         $.when((ts[0].deferred for ts in @tilesets)...).then =>
           for ts in @tilesets
             texture = ts[0] = ts[0].data
@@ -43,8 +45,10 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
                   new THREE.UV(u + deltaU, v)
                 ]
 
-          @uvs = @tilesets[0][1]
-          ts = @tilesets[0][0]
+          @uvs = []
+          for ts in @tilesets
+            for uvs in ts[1]
+              @uvs.push uvs
 
           position = 0
           for layer in mapJson.layers
@@ -61,12 +65,24 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
               if layer.data[i] is 0
                 plane.faces[i].materialIndex = 0
               else
-                plane.faces[i].materialIndex = 1
+                uvMax = @tilesets[0][1].length
+                mapIndex = 1
+                for tileset in @tilesets
+                  if layer.data[i] < uvMax
+                    plane.faces[i].materialIndex = mapIndex
+                    break
+                  else
+                    uvMax += @tilesets[mapIndex][1].length
+                    mapIndex += 1
+
             plane.materials[0] = new THREE.MeshBasicMaterial
               color: 0x000000,
               opacity: 0
 
-            plane.materials[1] = new THREE.MeshBasicMaterial { map: ts }
+            x = 1
+            for ts in @tilesets
+              plane.materials[x] = new THREE.MeshBasicMaterial { map: ts[0] }
+              x += 1
 
             mesh = new THREE.Mesh plane, new THREE.MeshFaceMaterial
             mesh.rotation.x = Math.PI / 2
@@ -85,10 +101,10 @@ define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"]
           object.y *= -1
           @objects.push object
           if object.properties["collision"]
-            object.x += 1
-            object.width -= 4
-            object.y -= 1
-            object.height -= 4
+            # object.x += 1
+            # object.width -= 4
+            # object.y -= 1
+            # object.height -= 4
             @controller.collision.addRect object
 
           # plane = new THREE.PlaneGeometry(object.width, object.height, 32, 32)
