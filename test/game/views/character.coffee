@@ -5,8 +5,8 @@ define deps, ($, THREE, Backbone, _, resource, animation) ->
     initialize: (@controller, @renderer, @scene, @texture) ->
       @setElement @renderer.domElement
 
-      @width = 32
-      @height = 32
+      @width = 16
+      @height = 16
 
       @texture.done @initializeSprite
         
@@ -18,7 +18,7 @@ define deps, ($, THREE, Backbone, _, resource, animation) ->
         map: @texture.data
         useScreenCoordinates: false
         scaleByViewport: true
-      @sprite.scale.x = @sprite.scale.y = 1 / 8
+      @sprite.scale.x = @sprite.scale.y = 1 / 16
       @sprite.uvScale.x = 1 / 8
       @sprite.position.y = 32
       @scene.add @sprite, 1
@@ -35,7 +35,7 @@ define deps, ($, THREE, Backbone, _, resource, animation) ->
       @controller.keyState.on "keydown", (keyCode) =>
         collision = @controller.collision.collidesDirections {
           x: @sprite.position.x + 2, y: @sprite.position.y + 2,
-          height: 28, width: 28 }
+          height: @height, width: @width }
         switch keyCode
           when 38
             if collision.y isnt -1
@@ -88,8 +88,8 @@ define deps, ($, THREE, Backbone, _, resource, animation) ->
       pixelHeight = @controller.tilemap.height * @controller.tilemap.tileHeight
       @sprite.position.x = x * 32
       @sprite.position.y = y * 32
-      @sprite.position.x -= (pixelWidth / 2) - 16
-      @sprite.position.y -= (pixelHeight / 2) - 16
+      @sprite.position.x -= (pixelWidth / 2) - (@width / 2)
+      @sprite.position.y -= (pixelHeight / 2) - (@height / 2)
       @sprite.position.y *= -1
 
     update: =>
@@ -99,7 +99,7 @@ define deps, ($, THREE, Backbone, _, resource, animation) ->
         @controller.cameraView.setPosition @sprite.position
         collision = @controller.collision.collidesDirections {
           x: @sprite.position.x + 2, y: @sprite.position.y + 2,
-          height: 28, width: 28 }
+          height: @height, width: @width }
         @velocity[0] = 0 if collision.x * @velocity[0] < 0
         @velocity[1] = 0 if collision.y * @velocity[1] < 0
         if collision.teleport?
