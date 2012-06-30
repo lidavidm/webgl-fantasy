@@ -84,7 +84,8 @@
  "orientation":"orthogonal",
  "properties":
     {
-     "start":"0,0"
+     "start":"0,0",
+     "type":"world"
     },
  "tileheight":32,
  "tilesets":[
