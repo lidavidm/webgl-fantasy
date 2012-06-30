@@ -1,9 +1,8 @@
-define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"],
-  ($, THREE, Backbone, resource) ->
-    class Tilemap extends Backbone.View
+define ["use!use/jquery", "use!use/Three", "cs!../view", "cs!../resource"],
+  ($, THREE, view, resource) ->
+    class Tilemap extends view.View
 
-      initialize: (@controller, @renderer, @scene, map) ->
-        @setElement @renderer.domElement
+      initialize: (controller, renderer, scene, map) ->
         @objects = []
         @meshes = []
         map.done =>

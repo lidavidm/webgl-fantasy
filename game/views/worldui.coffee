@@ -1,9 +1,8 @@
-deps = ["use!use/jquery", "use!use/backbone", "use!use/underscore",
+deps = ["use!use/jquery", "cs!../view", "use!use/underscore",
   "cs!../resource"]
-define deps, ($, Backbone, _, resource) ->
-  class WorldUI extends Backbone.View
-    initialize: (@controller, @renderer, @scene, el) ->
-      @setElement el
+define deps, ($, view, _, resource) ->
+  class WorldUI extends view.View
+    initialize: (controller, renderer, scene, el) ->
       @el = $(el)
       @el.css {
         width: 320,

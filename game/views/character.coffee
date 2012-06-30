@@ -1,10 +1,8 @@
-deps = ["use!use/jquery", "use!use/Three", "use!use/backbone", "use!use/underscore",
+deps = ["use!use/jquery", "use!use/Three", "cs!../view", "use!use/underscore",
   "cs!../resource", "cs!../sprite-animation"]
-define deps, ($, THREE, Backbone, _, resource, animation) ->
-  class Character extends Backbone.View
-    initialize: (@controller, @renderer, @scene, @texture) ->
-      @setElement @renderer.domElement
-
+define deps, ($, THREE, view, _, resource, animation) ->
+  class Character extends view.View
+    initialize: (controller, renderer, scene, @texture) ->
       @width = 16
       @height = 16
 
@@ -105,6 +103,7 @@ define deps, ($, THREE, Backbone, _, resource, animation) ->
       @sprite.position.x -= (pixelWidth / 2) - (@width / 2)
       @sprite.position.y -= (pixelHeight / 2) - (@height / 2)
       @sprite.position.y *= -1
+      @controller.cameraView.setPosition @sprite.position
 
     update: =>
       if @moving

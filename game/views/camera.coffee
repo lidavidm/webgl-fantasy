@@ -1,8 +1,7 @@
-define ["use!use/jquery", "use!use/Three", "use!use/backbone", "cs!../resource"],
-  ($, THREE, Backbone, resource) ->
-    class Camera extends Backbone.View
-      initialize: (@controller, @renderer, @scene, @camera) ->
-        @setElement @renderer.domElement
+define ["use!use/jquery", "use!use/Three", "cs!../view", "cs!../resource"],
+  ($, THREE, view, resource) ->
+    class Camera extends view.View
+      initialize: (controller, renderer, scene, @camera) ->
         @velocity = [0, 0]
 
       setPosition: (position) ->

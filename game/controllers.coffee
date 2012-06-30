@@ -2,14 +2,15 @@ deps = ["use!use/jquery", "use!use/Three", "use!use/Stats"
   "cs!./views", "cs!./resource", "cs!./event-keystate", "cs!./collision"]
 define deps, ($, THREE, Stats, views, resource, keystate, collision) ->
 
-  WIDTH = 320
-  HEIGHT = 320
+  WIDTH = 640
+  HEIGHT = 640
 
   class ZScene
     constructor: (@camera, numScenes) ->
       @scenes = []
       for i in [0...numScenes]
-        @scenes.push new THREE.Scene()
+        scene = new THREE.Scene()
+        @scenes.push scene
 
       @scenes[0].add @camera
 
