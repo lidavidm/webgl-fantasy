@@ -55,7 +55,7 @@ define deps, ($, THREE, view, _, resource, animation) ->
             if @teleport? and not @teleporting
               @controller.tilemap.changeTo(
                 resource.loadJSON(
-                  "res/" + @teleport + ".json?t="+((new Date).getTime())
+                  "/gamedata/" + @teleport + ".json?t="+((new Date).getTime())
                 ))
               @teleporting = true
         if @velocity[0] or @velocity[1]

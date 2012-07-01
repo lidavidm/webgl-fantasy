@@ -121,13 +121,13 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision) ->
       super()
 
       @tilemap = @addView(views.Tilemap,
-        resource.loadJSON ("res/test2.json?t="+(new Date).getTime()))
-      @character = @addView views.Character, resource.loadTexture "res/fighter.png"
+        resource.loadJSON ("/gamedata/test2.json?t="+(new Date).getTime()))
+      @character = @addView views.Character, resource.loadTexture "/gamedata/fighter.png"
       @cameraView = @addView views.Camera, @camera
 
-      @texture = THREE.ImageUtils.loadTexture "res/fighter.png", undefined, =>
+      @texture = THREE.ImageUtils.loadTexture "/gamedata/fighter.png", undefined, =>
         @characterView = new views.Character @, @renderer, @scene,
-          new resource.Resource "res/", @texture
+          new resource.Resource "/gamedata/", @texture
 
       @collision = new collision.CollisionManager
       
