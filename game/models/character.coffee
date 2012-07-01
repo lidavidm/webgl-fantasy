@@ -1,1 +1,4 @@
-deps = ["use!use/backbone"]
+deps = ["use!use/jquery", "use!use/backbone"]
+
+define deps, ->
+  
