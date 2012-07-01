@@ -2,8 +2,8 @@ deps = ["use!use/jquery", "use!use/Three", "use!use/Stats"
   "cs!./views", "cs!./resource", "cs!./event-keystate", "cs!./collision"]
 define deps, ($, THREE, Stats, views, resource, keystate, collision) ->
 
-  WIDTH = 640
-  HEIGHT = 640
+  WIDTH = 320
+  HEIGHT = 320
 
   class ZScene
     constructor: (@camera, numScenes) ->
@@ -16,7 +16,6 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision) ->
 
     add: (object, z = 0) ->
       if not @scenes[z] then throw console.error "z out of range: " + z
-  
       @scenes[z].add object
 
     remove: (object, z) ->
@@ -36,13 +35,13 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision) ->
       @renderer.setSize WIDTH, HEIGHT
       @renderer.setClearColorHex 0x000000, 1
       @renderer.autoClear = false
-      $(document.body).append @renderer.domElement
+      $(document.body).prepend @renderer.domElement
 
       @stats = new Stats
       @stats.setMode 0
       @stats.domElement.style.position = 'absolute'
-      @stats.domElement.style.left = '0px'
-      @stats.domElement.style.top = '320px'
+      @stats.domElement.style.left = '640px'
+      @stats.domElement.style.top = '0px'
       $(document.body).append @stats.domElement
 
       @keyState = new keystate.KeyState
@@ -80,9 +79,9 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision) ->
       if (frameTime > 250) then frameTime = 250
 
       accumulator += frameTime
-      while accumulator >= 33
+      while accumulator >= 25
         @update()
-        accumulator -= 33
+        accumulator -= 25
 
       @draw()
 

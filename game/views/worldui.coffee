@@ -1,19 +1,9 @@
 deps = ["use!use/jquery", "cs!../view", "use!use/underscore",
   "cs!../resource"]
 define deps, ($, view, _, resource) ->
-  class WorldUI extends view.View
+  class WorldUI extends view.UIView
     initialize: (controller, renderer, scene, el) ->
       @el = $(el)
-      @el.css {
-        width: 320,
-        height: 320,
-        display: "block",
-        position: "absolute",
-        left: 0,
-        top: 0,
-        color: "#FFFFFF",
-        fontFamily: "Cantarell"
-        }
       @elOverlay = $("<div>test</div>").appendTo(@el).css {
         textAlign: "center",
         width: "100%",

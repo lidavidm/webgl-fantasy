@@ -80,7 +80,9 @@ define ["use!use/jquery", "use!use/Three", "cs!../view", "cs!../resource"],
 
             x = 1
             for ts in @tilesets
-              plane.materials[x] = new THREE.MeshBasicMaterial { map: ts[0] }
+              plane.materials[x] = new THREE.MeshBasicMaterial {
+                map: ts[0]
+                }
               x += 1
 
             mesh = new THREE.Mesh plane, new THREE.MeshFaceMaterial
