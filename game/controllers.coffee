@@ -70,6 +70,17 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision) ->
       for view in @views
         view.update()
 
+    pause: (pauseViews...) ->
+      @oldUpdate = @update
+      # TODO pause keyState
+      @update = =>
+        for view in pauseViews
+          view.update()
+
+    unpause: ->
+      if @oldUpdate?
+        @update = @oldUpdate
+
     animate: (currentTime = (new Date).getTime(), accumulator = 0) =>
       @stats.begin()
       # based on http://gafferongames.com/game-physics/fix-your-timestep/

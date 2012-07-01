@@ -17,6 +17,8 @@ define deps, ($, view, _, resource) ->
     clearOverlay: ->
       @elOverlay.html ""
 
+    characterOverlay: ->
+
   return {
     WorldUI: WorldUI
     }
