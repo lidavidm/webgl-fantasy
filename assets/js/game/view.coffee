@@ -1,9 +1,9 @@
 define ["use!use/backbone"], ->
   class View
-    constructor: (@controller, @renderer, @scene, el, args...) ->
-      @initialize controller, renderer, scene, el, args...
+    constructor: (@controller, @renderer, @scene, args...) ->
+      @initialize args...
 
-    initialize: (controller, renderer, scene, el, args...) ->
+    initialize: (args...) ->
 
     update: ->
 

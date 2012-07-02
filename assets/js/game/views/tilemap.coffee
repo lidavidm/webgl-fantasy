@@ -2,7 +2,7 @@ define ["use!use/jquery", "use!use/Three", "cs!../view", "cs!../resource"],
   ($, THREE, view, resource) ->
     class Tilemap extends view.View
 
-      initialize: (controller, renderer, scene, map) ->
+      initialize: (map) ->
         @objects = []
         @meshes = []
         map.done =>

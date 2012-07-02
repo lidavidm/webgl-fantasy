@@ -1,7 +1,7 @@
 define ["use!use/jquery", "use!use/Three", "cs!../view", "cs!../resource"],
   ($, THREE, view, resource) ->
     class Camera extends view.View
-      initialize: (controller, renderer, scene, @camera) ->
+      initialize: (@camera) ->
         @velocity = [0, 0]
 
       setPosition: (position) ->

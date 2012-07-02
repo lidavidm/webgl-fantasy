@@ -2,7 +2,7 @@ deps = ["use!use/jquery", "cs!../view", "use!use/underscore",
   "cs!../resource"]
 define deps, ($, view, _, resource) ->
   class TitleUI extends view.View
-    initialize: (controller, renderer, scene, el, @klassOverworld) ->
+    initialize: (el, @klassOverworld) ->
       @el = $(el)
       @elOverlay = $("<div>Title Screen</div>").appendTo(@el).css {
         textAlign: "center",

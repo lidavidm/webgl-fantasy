@@ -2,7 +2,7 @@ deps = ["use!use/jquery", "use!use/Three", "cs!../view", "use!use/underscore",
   "cs!../resource", "cs!../sprite-animation"]
 define deps, ($, THREE, view, _, resource, animation) ->
   class Character extends view.View
-    initialize: (controller, renderer, scene, @texture) ->
+    initialize: (@texture) ->
       @width = 16
       @height = 16
 

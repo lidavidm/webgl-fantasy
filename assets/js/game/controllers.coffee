@@ -1,6 +1,7 @@
 deps = ["use!use/jquery", "use!use/Three", "use!use/Stats"
-  "cs!./views", "cs!./resource", "cs!./event-keystate", "cs!./collision"]
-define deps, ($, THREE, Stats, views, resource, keystate, collision) ->
+  "cs!./views", "cs!./resource", "cs!./event-keystate", "cs!./collision",
+  "cs!./models"]
+define deps, ($, THREE, Stats, views, resource, keystate, collision, models) ->
 
   WIDTH = 320
   HEIGHT = 320
@@ -114,7 +115,7 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision) ->
       super()
 
       @ui = @addView views.TitleUI, $("#ui"), Overworld
-          
+
 
   class Overworld extends Controller
     constructor: ->
@@ -126,7 +127,7 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision) ->
       @cameraView = @addView views.Camera, @camera
 
       @collision = new collision.CollisionManager
-      
+
       @ui = @addView views.WorldUI, $("#ui")
 
   return {
