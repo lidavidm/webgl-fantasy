@@ -20,12 +20,11 @@ app.configure "production", ->
   app.use express.errorHandler()
 
 app.get "/", routes.index
-app.get "/document/:id?", routes.document
-app.post "/document", routes.postDocument
-app.delete "/document/:id?", routes.deleteDocument
-app.get "/deleteall", ->
-  require('./models').Document.find {}, (err, docs) ->
-    for doc in docs
-      doc.remove()
+
+models = require './models'
+rest = require "./routes/rest"
+
+rest.createRoutesFor "character", models.Character, app
+
 app.listen 3000, ->
   console.log "Express server listening on port %d in %s mode", app.address().port, app.settings.env

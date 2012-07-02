@@ -125,10 +125,6 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision) ->
       @character = @addView views.Character, resource.loadTexture "/gamedata/fighter.png"
       @cameraView = @addView views.Camera, @camera
 
-      @texture = THREE.ImageUtils.loadTexture "/gamedata/fighter.png", undefined, =>
-        @characterView = new views.Character @, @renderer, @scene,
-          new resource.Resource "/gamedata/", @texture
-
       @collision = new collision.CollisionManager
       
       @ui = @addView views.WorldUI, $("#ui")

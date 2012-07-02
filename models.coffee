@@ -1,20 +1,17 @@
 mongoose = require 'mongoose'
 
-mongoose.connect 'mongodb://localhost/test'
+mongoose.connect 'mongodb://localhost/friends_test'
 
-CommentSchema = new mongoose.Schema
-  comment: String
-  date: Date
-
-DocumentSchema = new mongoose.Schema
-  type: String
-  author: String
-  date: Date
+ItemSchema = new mongoose.Schema
   name: String
-  content: String
-  comments: [CommentSchema]
-  tags: [String]
-  metadata: {}
+  type: String
 
-exports.Document = mongoose.model 'Document', DocumentSchema
-exports.Comment = mongoose.model 'Comment', CommentSchema
+CharacterSchema = new mongoose.Schema
+  name: String
+  stats:
+    health: Number
+    mana: Number
+  inventory: [ItemSchema]
+  
+exports.Item = mongoose.model 'Item', ItemSchema
+exports.Character = mongoose.model 'Character', CharacterSchema
