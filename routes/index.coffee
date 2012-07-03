@@ -7,4 +7,4 @@ exports.deleteDocument = document.deleteDocument
 
 exports.index = (req, res) ->
   res.render "index",
-    title: "Mneme Notes"
+    title: "Game"

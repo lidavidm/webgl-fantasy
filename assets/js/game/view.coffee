@@ -1,15 +1,13 @@
 define ["use!use/backbone"], ->
   class View
-    constructor: (@controller, @renderer, @scene, args...) ->
+    constructor: (@controller, @renderer, @scene, @model, args...) ->
       @initialize args...
 
     initialize: (args...) ->
 
     update: ->
 
-  class UIView extends Backbone.View
-
-  UIView.extend View
+  class UIView extends View
 
   return {
     View: View,

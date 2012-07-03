@@ -41,7 +41,7 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision, models) ->
       @stats = new Stats
       @stats.setMode 0
       @stats.domElement.style.position = 'absolute'
-      @stats.domElement.style.left = '640px'
+      @stats.domElement.style.left = '0px'
       @stats.domElement.style.top = '0px'
       $(document.body).append @stats.domElement
 
@@ -52,8 +52,8 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision, models) ->
       @loading = []
       @views = []
 
-    addView: (klass, args...) ->
-      view = new klass @, @renderer, @scene, args...
+    addView: (klass, model, args...) ->
+      view = new klass @, @renderer, @scene, model, args...
       @loading.push view.deferred
       @views.push view
       return view
@@ -114,21 +114,25 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision, models) ->
     constructor: ->
       super()
 
-      @ui = @addView views.TitleUI, $("#ui"), Overworld
+      @ui = @addView views.TitleUI, null, $("#ui"), Overworld
 
 
   class Overworld extends Controller
     constructor: ->
       super()
-
-      @tilemap = @addView(views.Tilemap,
+      models.Characters.fetch()
+      @tilemap = @addView(views.Tilemap, null,
         resource.loadJSON ("/gamedata/test2.json?t="+(new Date).getTime()))
-      @character = @addView views.Character, resource.loadTexture "/gamedata/fighter.png"
-      @cameraView = @addView views.Camera, @camera
+      @character = @addView(
+        views.Character,
+        models.Characters.at(0),
+        resource.loadTexture "/gamedata/fighter.png"
+        )
+      @cameraView = @addView views.Camera, null, @camera
 
       @collision = new collision.CollisionManager
 
-      @ui = @addView views.WorldUI, $("#ui")
+      @ui = @addView views.WorldUI, null, $("#ui")
 
   return {
     Title: Title,

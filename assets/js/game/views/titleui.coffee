@@ -4,13 +4,6 @@ define deps, ($, view, _, resource) ->
   class TitleUI extends view.View
     initialize: (el, @klassOverworld) ->
       @el = $(el)
-      @elOverlay = $("<div>Title Screen</div>").appendTo(@el).css {
-        textAlign: "center",
-        width: "100%",
-        marginTop: "40px",
-        fontSize: "20px"
-        }
-
       @counter = 10
 
     update: ->
