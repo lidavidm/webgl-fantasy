@@ -51,6 +51,7 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision, models) ->
 
       @loading = []
       @views = []
+      @paused = false
 
     addView: (klass, model, args...) ->
       view = new klass @, @renderer, @scene, model, args...
@@ -72,14 +73,19 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision, models) ->
         view.update()
 
     pause: (pauseViews...) ->
-      @oldUpdate = @update
-      # TODO pause keyState
-      @update = =>
-        for view in pauseViews
-          view.update()
+      console.log "pause"
+      if not @paused
+        @oldUpdate = @update
+        @paused = true
+        # TODO pause keyState
+        @update = =>
+          for view in pauseViews
+            view.update()
 
     unpause: ->
+      console.log "unpause"
       if @oldUpdate?
+        @paused = false
         @update = @oldUpdate
 
     animate: (currentTime = (new Date).getTime(), accumulator = 0) =>
@@ -121,11 +127,14 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision, models) ->
     constructor: ->
       super()
       models.Characters.fetch()
+
+      @santi = models.Characters.create { name: "Santiago" }
+
       @tilemap = @addView(views.Tilemap, null,
         resource.loadJSON ("/gamedata/test2.json?t="+(new Date).getTime()))
       @character = @addView(
         views.Character,
-        models.Characters.at(0),
+        @santi,
         resource.loadTexture "/gamedata/fighter.png"
         )
       @cameraView = @addView views.Camera, null, @camera
