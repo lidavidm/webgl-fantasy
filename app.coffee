@@ -23,8 +23,10 @@ app.get "/", routes.index
 
 models = require './models'
 rest = require "./routes/rest"
+crud = require "./routes/crud"
 
 rest.createRoutesFor "character", models.Character, app
+crud.createCRUDFor "item", models.Item, app
 
 app.listen 3000, ->
   console.log "Express server listening on port %d in %s mode", app.address().port, app.settings.env

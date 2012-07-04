@@ -73,7 +73,6 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision, models) ->
         view.update()
 
     pause: (pauseViews...) ->
-      console.log "pause"
       if not @paused
         @oldUpdate = @update
         @paused = true
@@ -83,7 +82,6 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision, models) ->
             view.update()
 
     unpause: ->
-      console.log "unpause"
       if @oldUpdate?
         @paused = false
         @update = @oldUpdate

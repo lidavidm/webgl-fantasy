@@ -1,1 +1,18 @@
-div#ui
+!!!
+html
+  head
+    title= title
+    != css('main')
+    script(data-main="js/main", type="text/javascript", src="/js/require.js")
+  body
+    div#ui
+    
+    script(type="text/template")#templ-character-overlay
+      div.inner
+        div.topbar
+          h1 <%= name %>
+          div.statbars
+            div.statbar.health
+              div
+            div.statbar.mana
+          div

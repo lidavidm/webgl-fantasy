@@ -6,8 +6,12 @@ define deps, ($, Backbone) ->
     defaults:
       name: "(unnamed)"
       stats:
+        health: 75
+        mana: 50
+      maxStats:
         health: 100
         mana: 100
+      equip: {}
       inventory: []
 
     initialize: (attrs = {}) ->

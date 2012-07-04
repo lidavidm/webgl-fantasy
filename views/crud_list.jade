@@ -1,0 +1,19 @@
+div
+  h1= title
+  ul#nav-actions
+    li: a(href=prefix + 'new') New
+    li: a(href='#', id="list-delete") Delete
+
+  table#objects
+    thead
+      tr
+        th
+        each key in fields
+          th #{key}
+    tbody
+      each object in objects
+        tr
+          td: input(type="checkbox", name=object.id, value=object.id)
+          each key in fields
+            td
+              | #{object[key]}

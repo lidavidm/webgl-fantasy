@@ -1,7 +1,40 @@
 deps = ["use!use/jquery", "cs!../view", "use!use/underscore",
   "cs!../resource"]
 define deps, ($, view, _, resource) ->
-  class WorldUI extends view.UIView
+
+  class CharacterOverlay extends view.UIView
+    tagName: "div"
+
+    template: _.template $("#templ-character-overlay").html()
+    
+    hide: ->
+      $(@el).hide()
+
+    show: ->
+      @render()
+      $(@el).show()
+
+    render: =>
+      $(@el)
+        .addClass('templ-character-overlay')
+        .html(@template @model.toJSON())
+
+      $(@el)
+        .find('.statbar')
+        .css({ marginRight: "2em" })
+
+      $($(@el).find('.statbar')[0]).children('div')
+        .html('hp ' + @model.get("stats").health)
+        .width(100 *
+          (@model.get("stats").health / @model.get("maxStats").health))
+      $($(@el).find('.statbar')[1]).children('div')
+        .html('mp ' + @model.get("stats").mana)
+        .width(100 *
+          (@model.get("stats").mana / @model.get("maxStats").mana))
+
+            
+  
+  class WorldUI extends view.View
     initialize: (el, args...) ->
       @el = $(el)
       @elOverlay = $("<div></div>")
@@ -12,8 +45,15 @@ define deps, ($, view, _, resource) ->
         if keyCode is 81  # Q
           if @controller.paused
             @controller.unpause()
+            @characterOverlay.hide()
           else
             @controller.pause @
+            @characterOverlay.show()
+
+      @controller.character.deferred.done =>
+        @characterOverlay = new CharacterOverlay {
+          model: @controller.character.model }
+        @el.append @characterOverlay.el
 
     update: ->
     overlay: (text) ->
@@ -21,8 +61,6 @@ define deps, ($, view, _, resource) ->
 
     clearOverlay: ->
       @elOverlay.html ""
-
-    characterOverlay: ->
 
   return {
     WorldUI: WorldUI

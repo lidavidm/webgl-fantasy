@@ -7,7 +7,7 @@ define ["use!use/backbone"], ->
 
     update: ->
 
-  class UIView extends View
+  class UIView extends Backbone.View
 
   return {
     View: View,
