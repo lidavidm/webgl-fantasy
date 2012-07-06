@@ -1,0 +1,21 @@
+id: 6c08efc8-e6e1-4e84-b4b2-06ca2cf66f31
+name: Iron Sword
+value: 50
+type: weapon
+data:
+  type: sword
+  damage: 20
+  range: 2
+  cooldown: 5
+
+---
+
+id: 5c9eed00-1155-4436-b67a-8848e8ec402c
+name: Steel Sword
+value: 50
+type: weapon
+data:
+  type: sword
+  damage: 30
+  range: 2
+  cooldown: 6

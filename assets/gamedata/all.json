@@ -1,0 +1,24 @@
+{
+    "6c08efc8-e6e1-4e84-b4b2-06ca2cf66f31": {
+        "type": "weapon", 
+        "data": {
+            "range": 2, 
+            "cooldown": 5, 
+            "type": "sword", 
+            "damage": 20
+        }, 
+        "value": 50, 
+        "name": "Iron Sword"
+    }, 
+    "5c9eed00-1155-4436-b67a-8848e8ec402c": {
+        "type": "weapon", 
+        "data": {
+            "range": 2, 
+            "cooldown": 6, 
+            "type": "sword", 
+            "damage": 30
+        }, 
+        "value": 50, 
+        "name": "Steel Sword"
+    }
+}

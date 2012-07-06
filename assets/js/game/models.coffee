@@ -1,8 +1,10 @@
-deps = ["cs!./models/character"]
-define deps, (char) ->
+deps = ["cs!./models/character", "cs!./models/item"]
+define deps, (modules...) ->
   exports = {}
 
-  for prop of char
-    exports[prop] = char[prop]
+  for module in modules
+    for prop of module
+      exports[prop] = module[prop]
+      window[prop] = module[prop]
 
   return exports

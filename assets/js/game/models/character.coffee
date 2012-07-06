@@ -22,12 +22,11 @@ define deps, ($, Backbone) ->
 
   class CharacterList extends Backbone.Collection
     model: Character
-    url: '/character'
+    url: '/data/character'
 
   Characters = new CharacterList
 
   return {
-    Stats: Stats
     Character: Character
     Characters: Characters
     }

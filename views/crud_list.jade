@@ -8,12 +8,16 @@ div
     thead
       tr
         th
+        th
         each key in fields
           th #{key}
     tbody
       each object in objects
         tr
-          td: input(type="checkbox", name=object.id, value=object.id)
+          td
+            input(type="checkbox",
+                  name=object.id, value=object.id).list-delete-checkbox
+          td: a(href="edit/" + object._id).list-edit edit
           each key in fields
             td
               | #{object[key]}
