@@ -1,7 +1,8 @@
 deps = ["use!use/jquery", "use!use/Three", "use!use/Stats"
   "cs!./views", "cs!./resource", "cs!./event-keystate", "cs!./collision",
-  "cs!./models"]
-define deps, ($, THREE, Stats, views, resource, keystate, collision, models) ->
+  "cs!./models", "cs!./data"]
+define deps, ($, THREE, Stats, views, resource, keystate, collision, models,
+  data) ->
 
   WIDTH = 320
   HEIGHT = 320
@@ -76,7 +77,7 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision, models) ->
       if not @paused
         @oldUpdate = @update
         @paused = true
-        # TODO pause keyState
+        @keyState.pause()
         @update = =>
           for view in pauseViews
             view.update()
@@ -85,6 +86,7 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision, models) ->
       if @oldUpdate?
         @paused = false
         @update = @oldUpdate
+        @keyState.unpause()
 
     animate: (currentTime = (new Date).getTime(), accumulator = 0) =>
       @stats.begin()
@@ -126,7 +128,9 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision, models) ->
       super()
       models.Characters.fetch()
 
-      @santi = models.Characters.create { name: "Santiago" }
+      @santi = models.Characters.create
+        name: "Santiago"
+        inventory: [data[data.find { name: "Iron Sword" }]]
 
       @tilemap = @addView(views.Tilemap, null,
         resource.loadJSON ("/gamedata/test2.json?t="+(new Date).getTime()))
