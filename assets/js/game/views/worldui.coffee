@@ -2,17 +2,21 @@ deps = ["use!use/jquery", "cs!../view", "use!use/underscore",
   "cs!../resource"]
 define deps, ($, view, _, resource) ->
 
+  ANIMATION_SPEED =
+    FAST: 300
+    SLOW: 600
+
   class CharacterOverlay extends view.UIView
     tagName: "div"
 
     template: _.template $("#templ-character-overlay").html()
 
     hide: ->
-      $(@el).hide()
+      $(@el).fadeOut ANIMATION_SPEED.FAST
 
     show: ->
       @render()
-      $(@el).show()
+      $(@el).fadeIn ANIMATION_SPEED.FAST
 
     render: =>
       $(@el)
@@ -25,13 +29,20 @@ define deps, ($, view, _, resource) ->
 
       $($(@el).find('.statbar')[0]).children('div')
         .html('hp ' + @model.get("stats").health)
-        .width(100 *
-          (@model.get("stats").health / @model.get("maxStats").health))
+        .width(10)
+        .animate {
+          width: (100 *
+            (@model.get("stats").health / @model.get("maxStats").health))
+          },
+          { duration: ANIMATION_SPEED.SLOW }
       $($(@el).find('.statbar')[1]).children('div')
         .html('mp ' + @model.get("stats").mana)
-        .width(100 *
-          (@model.get("stats").mana / @model.get("maxStats").mana))
-
+        .width(10)
+        .animate {
+          width: (100 *
+            (@model.get("stats").mana / @model.get("maxStats").mana))
+          },
+          { duration: ANIMATION_SPEED.SLOW }
 
 
   class WorldUI extends view.View
@@ -65,10 +76,10 @@ define deps, ($, view, _, resource) ->
       @elOverlay.html ""
 
     hideOverlay: ->
-      @elOverlay.hide 500
+      @elOverlay.fadeOut ANIMATION_SPEED.FAST
 
     showOverlay: ->
-      @elOverlay.show 500
+      @elOverlay.fadeIn ANIMATION_SPEED.FAST
 
   return {
     WorldUI: WorldUI
