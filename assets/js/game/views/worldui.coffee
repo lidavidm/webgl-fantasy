@@ -6,7 +6,7 @@ define deps, ($, view, _, resource) ->
     tagName: "div"
 
     template: _.template $("#templ-character-overlay").html()
-    
+
     hide: ->
       $(@el).hide()
 
@@ -32,8 +32,8 @@ define deps, ($, view, _, resource) ->
         .width(100 *
           (@model.get("stats").mana / @model.get("maxStats").mana))
 
-            
-  
+
+
   class WorldUI extends view.View
     initialize: (el, args...) ->
       @el = $(el)
@@ -41,14 +41,16 @@ define deps, ($, view, _, resource) ->
         .appendTo(@el)
         .css { textAlign: 'center' }
 
-      @controller.keyState.on "keydown", (keyCode) =>
+      @controller.keyState.on "ui_keydown", (keyCode) =>
         if keyCode is 81  # Q
           if @controller.paused
             @controller.unpause()
             @characterOverlay.hide()
+            @showOverlay()
           else
             @controller.pause @
             @characterOverlay.show()
+            @hideOverlay()
 
       @controller.character.deferred.done =>
         @characterOverlay = new CharacterOverlay {
@@ -61,6 +63,12 @@ define deps, ($, view, _, resource) ->
 
     clearOverlay: ->
       @elOverlay.html ""
+
+    hideOverlay: ->
+      @elOverlay.hide 500
+
+    showOverlay: ->
+      @elOverlay.show 500
 
   return {
     WorldUI: WorldUI
