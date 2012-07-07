@@ -21,10 +21,10 @@ app.configure "production", ->
 
 app.get "/", routes.index
 
-models = require './models'
-rest = require "./routes/rest"
+# models = require './models'
+# rest = require "./routes/rest"
 
-rest.createRoutesFor "character", models.Character, app
+# rest.createRoutesFor "character", models.Character, app
 
 app.listen process.env.PORT, ->
   console.log "Express server listening on port %d in %s mode", app.address().port, app.settings.env
