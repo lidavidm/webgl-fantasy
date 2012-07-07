@@ -1,6 +1,6 @@
 deps = ["use!use/jquery", "use!use/jquery-ui", "cs!../view", "use!use/underscore",
-  "cs!../resource"]
-define deps, ($, $2, view, _, resource) ->
+  "cs!../resource", "cs!../data"]
+define deps, ($, $2, view, _, resource, data) ->
 
   ANIMATION_SPEED =
     FAST: 300
@@ -10,6 +10,7 @@ define deps, ($, $2, view, _, resource) ->
     tagName: "div"
 
     template: _.template $("#templ-character-overlay").html()
+    templateInventoryItem: _.template $("#templ-inventory-item").html()
 
     hide: ->
       $(@el).fadeOut ANIMATION_SPEED.FAST
@@ -21,7 +22,13 @@ define deps, ($, $2, view, _, resource) ->
     render: =>
       $(@el)
         .addClass('templ-character-overlay')
-        .html(@template { data: @model.toJSON() })
+        .html(@template { data: @model.toJSON(), inventoryItem: @templateInventoryItem })
+
+      equip = @model.get 'equip'
+      for slot of equip
+        if equip[slot]?
+          $("#equip-slot-"+slot).append(
+            $(@templateInventoryItem { item: equip[slot] }))
 
       $(@el)
         .find('.inventory-item')
@@ -37,8 +44,11 @@ define deps, ($, $2, view, _, resource) ->
         .find('.equip-slot')
         .droppable
           drop: (event, ui) =>
-            slot = $(event.target).html()
-            slot = slot.substr(0, slot.length - 1)
+            slot = $.trim $(event.target).html()
+            slot = slot.substring(0, slot.length - 1)
+            equip = @model.get 'equip'
+            equip[slot] = data[$(ui.draggable).data('itemId')]
+            @model.set { equip: equip }
             $(ui.draggable)
               .appendTo($(event.target))
               .css
