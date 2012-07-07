@@ -1,11 +1,15 @@
 {
     "name": "rpg-friends"
   , "version": "0.0.1"
+  , "engines": {
+      "node": "0.6.x"
+  }
   , "private": true
   , "dependencies": {
       "express": "2.5.10"
     , "jade": ">= 0.0.1"
-    , "connect-assets": "2.1.4"
+    , "connect-assets": "2.2.1"
     , "coffee-script": "1.3.3"
+    , "zlib"
   }
 }
