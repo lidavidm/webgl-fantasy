@@ -26,5 +26,5 @@ rest = require "./routes/rest"
 
 rest.createRoutesFor "character", models.Character, app
 
-app.listen 3000, ->
+app.listen process.env.port or 5000, ->
   console.log "Express server listening on port %d in %s mode", app.address().port, app.settings.env

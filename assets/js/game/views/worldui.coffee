@@ -21,23 +21,25 @@ define deps, ($, view, _, resource) ->
     render: =>
       $(@el)
         .addClass('templ-character-overlay')
-        .html(@template @model.toJSON())
+        .html(@template { data: @model.toJSON() })
 
       $(@el)
         .find('.statbar')
         .css({ marginRight: "2em" })
 
-      $($(@el).find('.statbar')[0]).children('div')
-        .html('hp ' + @model.get("stats").health)
-        .width(10)
+      $($(@el).find('.statbar')[0])
+        .html('<div/><span>' + @model.get("stats").health + ' hp</span>')
+        .children('div')
+        .width(0)
         .animate {
           width: (100 *
             (@model.get("stats").health / @model.get("maxStats").health))
           },
           { duration: ANIMATION_SPEED.SLOW }
-      $($(@el).find('.statbar')[1]).children('div')
-        .html('mp ' + @model.get("stats").mana)
-        .width(10)
+      $($(@el).find('.statbar')[1])
+        .html('<div/><span>' + @model.get("stats").mana + ' mana</span>')
+        .children('div')
+        .width(0)
         .animate {
           width: (100 *
             (@model.get("stats").mana / @model.get("maxStats").mana))
@@ -56,12 +58,12 @@ define deps, ($, view, _, resource) ->
         if keyCode is 81  # Q
           if @controller.paused
             @controller.unpause()
-            @characterOverlay.hide()
             @showOverlay()
+            @characterOverlay.hide()
           else
             @controller.pause @
-            @characterOverlay.show()
             @hideOverlay()
+            @characterOverlay.show()
 
       @controller.character.deferred.done =>
         @characterOverlay = new CharacterOverlay {
@@ -76,10 +78,11 @@ define deps, ($, view, _, resource) ->
       @elOverlay.html ""
 
     hideOverlay: ->
-      @elOverlay.fadeOut ANIMATION_SPEED.FAST
+      @elOverlayHeight = @elOverlay.height()
+      @elOverlay.animate { height: 0, opacity: 0 }, ANIMATION_SPEED.FAST
 
     showOverlay: ->
-      @elOverlay.fadeIn ANIMATION_SPEED.FAST
+      @elOverlay.animate { height: @elOverlayHeight, opacity: 1 }, ANIMATION_SPEED.FAST
 
   return {
     WorldUI: WorldUI

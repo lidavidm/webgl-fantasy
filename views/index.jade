@@ -10,9 +10,18 @@ html
     script(type="text/template")#templ-character-overlay
       div.inner
         div.topbar
-          h1 <%= name %>
+          h1 <%= data.name %>
           div.statbars
             div.statbar.health
               div
             div.statbar.mana
               div
+        div.main
+          div.stats
+            Stats
+          div.equip
+          div.inventory
+            ul
+              <% _.each(data.inventory, function (item) { %>
+              <li><%= item.name %></li>
+              <% }); %>

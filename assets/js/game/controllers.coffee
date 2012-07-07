@@ -126,7 +126,6 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision, models,
   class Overworld extends Controller
     constructor: ->
       super()
-      models.Characters.fetch()
 
       @santi = models.Characters.create
         name: "Santiago"

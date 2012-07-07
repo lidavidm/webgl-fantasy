@@ -1,3 +1,5 @@
+$ui-character-fg = #444
+
 body
   margin 0
   padding 0
@@ -17,7 +19,7 @@ canvas
   margin-left -320px
   width 640px
   height 640px
-  color #FFF
+  color #000
   font-family Cantarell
   font-size 18px
   display block
@@ -26,18 +28,18 @@ canvas
     width 620px
     height 620px
     margin auto
-    background-color #BBBBBBBB
+    background-color #DDDDDDDD
     div.inner
       margin 0.25em
 
    div.topbar
      height 2em
      line-height 2em
-     border-bottom 1px solid #F00
+     border-bottom 1px solid $ui-character-fg
      padding-bottom 0.25em
      h1
        font-family 'Open Sans Light'
-       color #F00
+       color $ui-character-fg
        display inline-block
        font-weight normal
        margin 0
@@ -58,6 +60,7 @@ div.statbar
   line-height 20px
   display inline-block
   margin 0
+  color #FFF
     
   div
     margin 0
@@ -65,6 +68,10 @@ div.statbar
     height 100%
     line-height 100%
     font-variant small-caps
+
+  span
+    display block
+    margin-top -20px
 
 .statbar.health
   border 1px solid #F00
