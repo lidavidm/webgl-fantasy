@@ -52,7 +52,7 @@ define deps, ($, view, _, resource) ->
       @el = $(el)
       @elOverlay = $("<div></div>")
         .appendTo(@el)
-        .css { textAlign: 'center' }
+        .css { textAlign: 'center', color: "#FFF" }
 
       @controller.keyState.on "ui_keydown", (keyCode) =>
         if keyCode is 81  # Q
