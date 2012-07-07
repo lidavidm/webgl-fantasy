@@ -1,6 +1,6 @@
-deps = ["use!use/jquery", "cs!../view", "use!use/underscore",
+deps = ["use!use/jquery", "use!use/jquery-ui", "cs!../view", "use!use/underscore",
   "cs!../resource"]
-define deps, ($, view, _, resource) ->
+define deps, ($, $2, view, _, resource) ->
 
   ANIMATION_SPEED =
     FAST: 300
@@ -22,6 +22,28 @@ define deps, ($, view, _, resource) ->
       $(@el)
         .addClass('templ-character-overlay')
         .html(@template { data: @model.toJSON() })
+
+      $(@el)
+        .find('.inventory-item')
+        .draggable()
+
+      $(@el)
+        .find('.inventory ul')
+        .droppable
+          drop: (event, ui) =>
+            $(ui.draggable).appendTo($(event.target)).css { left: 0, top: 0}
+
+      $(@el)
+        .find('.equip-slot')
+        .droppable
+          drop: (event, ui) =>
+            slot = $(event.target).html()
+            slot = slot.substr(0, slot.length - 1)
+            $(ui.draggable)
+              .appendTo($(event.target))
+              .css
+                left: 0
+                top: 0
 
       $(@el)
         .find('.statbar')

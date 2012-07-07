@@ -11,7 +11,12 @@ define deps, ($, Backbone) ->
       maxStats:
         health: 100
         mana: 100
-      equip: {}
+      equip:
+        head: null
+        body: null
+        feet: null
+        left: null
+        right: null
       inventory: []
 
     initialize: (attrs = {}) ->

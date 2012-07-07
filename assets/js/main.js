@@ -19,6 +19,10 @@ require.config({
             attach: "$"
         },
 
+        "use/jquery-ui": {
+            attach: "$"
+        },
+
         "use/underscore": {
             attach: "_"
         },

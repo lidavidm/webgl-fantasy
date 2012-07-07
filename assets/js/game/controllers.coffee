@@ -127,9 +127,11 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision, models,
     constructor: ->
       super()
 
+      ironSword = data[data.find { name: "Iron Sword" }]
+
       @santi = models.Characters.create
         name: "Santiago"
-        inventory: [data[data.find { name: "Iron Sword" }]]
+        inventory: [ironSword, ironSword, ironSword, ironSword, ironSword]
 
       @tilemap = @addView(views.Tilemap, null,
         resource.loadJSON ("/gamedata/test2.json?t="+(new Date).getTime()))

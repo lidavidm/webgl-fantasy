@@ -3,6 +3,7 @@ html
   head
     title= title
     != css('main')
+    != css('jquery-ui')
     script(data-main="js/main", type="text/javascript", src="/js/require.js")
   body
     div#ui
@@ -20,8 +21,14 @@ html
           div.stats
             Stats
           div.equip
+            h2 Equip
+            ul
+              <% _.each(_.keys(data.equip), function (slot) { %>
+              <li class="equip-slot"><%= slot %>:</li>
+              <% }); %>
           div.inventory
+            h2 Inventory
             ul
               <% _.each(data.inventory, function (item) { %>
-              <li><%= item.name %></li>
+              <li class="inventory-item" data-item=""><%= item.name %></li>
               <% }); %>
