@@ -128,5 +128,5 @@ define ["use!use/jquery", "use!use/Three", "cs!../view", "cs!../resource"],
           @initializeMap resource.path, resource.data
           # since the character has already been loaded by now
           @controller.character.setSpritePosition()
-  
+
     return { Tilemap: Tilemap }

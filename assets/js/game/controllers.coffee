@@ -54,6 +54,9 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision, models,
       @views = []
       @paused = false
 
+      window.requestAnimationFrame = window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame
+
     addView: (klass, model, args...) ->
       view = new klass @, @renderer, @scene, model, args...
       @loading.push view.deferred
@@ -105,7 +108,7 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision, models,
 
       @stats.end()
 
-      window.webkitRequestAnimationFrame =>  # TODO: requestAnimationFrame shim!
+      window.requestAnimationFrame =>
         @animate newTime, accumulator
 
     transition: (controller) ->
