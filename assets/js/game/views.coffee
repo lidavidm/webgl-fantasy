@@ -1,10 +1,8 @@
 deps = ["cs!./views/tilemap", "cs!./views/character", "cs!./views/camera",
-  "cs!./views/worldui", "cs!./views/titleui"]
-define deps, (tm, char, cam, wui, tui) ->
-    return {
-      Tilemap: tm.Tilemap,
-      Camera: cam.Camera,
-      Character: char.Character,
-      WorldUI: wui.WorldUI,
-      TitleUI: tui.TitleUI
-    }
+  "cs!./views/worldui", "cs!./views/titleui", "cs!./views/npcs"]
+define deps, (views...) ->
+  exports = {}
+  for view in views
+    for obj of view
+      exports[obj] = view[obj]
+  return exports

@@ -4,8 +4,8 @@ deps = ["use!use/jquery", "use!use/Three", "use!use/Stats"
 define deps, ($, THREE, Stats, views, resource, keystate, collision, models,
   data) ->
 
-  WIDTH = 320
-  HEIGHT = 320
+  WIDTH = 640
+  HEIGHT = 640
 
   class ZScene
     constructor: (@camera, numScenes) ->
@@ -135,9 +135,11 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision, models,
       @santi = models.Characters.create
         name: "Santiago"
         inventory: [ironSword, ironSword, ironSword, ironSword, ironSword]
+      @santi.behavesAs models.Santiago
 
       @tilemap = @addView(views.Tilemap, null,
         resource.loadJSON ("/gamedata/test2.json?t="+(new Date).getTime()))
+      #@npcs = @addView(views.NonPlayerCharacter, null, null)
       @character = @addView(
         views.Character,
         @santi,

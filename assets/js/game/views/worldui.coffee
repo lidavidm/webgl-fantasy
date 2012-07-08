@@ -32,28 +32,37 @@ define deps, ($, $2, view, _, resource, data) ->
 
       $(@el)
         .find('.inventory-item')
-        .draggable()
+        .draggable
+          revert: true
 
       $(@el)
         .find('.inventory ul')
         .droppable
           drop: (event, ui) =>
-            $(ui.draggable).appendTo($(event.target)).css { left: 0, top: 0}
+            $(ui.draggable).appendTo($(event.target)).css { left: 0, top: 0 }
 
       $(@el)
         .find('.equip-slot')
         .droppable
           drop: (event, ui) =>
+            itemId = $(ui.draggable).data('itemId')
+
             slot = $.trim $(event.target).html()
             slot = slot.substring(0, slot.length - 1)
-            equip = @model.get 'equip'
-            equip[slot] = data[$(ui.draggable).data('itemId')]
-            @model.set { equip: equip }
-            $(ui.draggable)
-              .appendTo($(event.target))
-              .css
-                left: 0
-                top: 0
+
+            if slot in @model.behavior.equipSlots(@model.inventory.find itemId)
+              equip = @model.get 'equip'
+              equip[slot] = data[itemId]
+              @model.inventory.remove itemId
+
+              @model.set { equip: equip }
+              ui.draggable
+                .appendTo($(event.target))
+                .css
+                  left: 0
+                  top: 0
+            else
+              ui.draggable.css { left: 0, top: 0 }
 
       $(@el)
         .find('.statbar')

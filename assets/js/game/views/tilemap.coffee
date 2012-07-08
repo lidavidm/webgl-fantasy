@@ -108,6 +108,9 @@ define ["use!use/jquery", "use!use/Three", "cs!../view", "cs!../resource"],
             # object.height -= 4
             @controller.collision.addRect object
 
+          if object.properties["npc"]
+            @controller.npcs.addSprite "thief", resource.loadTexture "/gamedata/thief.png"
+
           # plane = new THREE.PlaneGeometry(object.width, object.height, 32, 32)
           # mesh = new THREE.Mesh plane, new THREE.MeshBasicMaterial {
           #   color: 0xFF0000

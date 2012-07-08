@@ -7,7 +7,7 @@ define deps, ($, THREE, view, _, resource, animation) ->
       @height = 16
 
       @texture.done @initializeSprite
-        
+
       @deferred = @texture.deferred
       @teleporting = false
 
@@ -16,7 +16,7 @@ define deps, ($, THREE, view, _, resource, animation) ->
         map: @texture.data
         useScreenCoordinates: false
         scaleByViewport: true
-      @sprite.scale.x = @sprite.scale.y = 1 / 16
+      @sprite.scale.x = @sprite.scale.y = 1 / 8
       @sprite.uvScale.x = 1 / 8
       @sprite.position.y = 32
       @scene.add @sprite, 1
@@ -29,7 +29,7 @@ define deps, ($, THREE, view, _, resource, animation) ->
       @animation.addGroup "right", [6, 0], [7, 0]
       @skip = 0
       @velocity = [0, 0]
-  
+
       @controller.keyState.on "keydown", (keyCode) =>
         collision = @controller.collision.collidesDirections {
           x: @sprite.position.x + 2, y: @sprite.position.y + 2,
@@ -71,7 +71,7 @@ define deps, ($, THREE, view, _, resource, animation) ->
             @moving = false
 
       @moving = false
-      
+
       @controller.tilemap.deferred.done @setSpritePosition
 
     setSpritePosition:  =>
@@ -85,11 +85,11 @@ define deps, ($, THREE, view, _, resource, animation) ->
       if mapType is 'world'
         @width = 16
         @height = 16
-        @sprite.scale.x = @sprite.scale.y = 1 / 16
+        @sprite.scale.x = @sprite.scale.y = 1 / 8
       else
         @width = 20
         @height = 20
-        @sprite.scale.x = @sprite.scale.y = 1 / 8
+        @sprite.scale.x = @sprite.scale.y = 1 / 4
       x = 0
       y = 0
       if properties.start?
@@ -98,8 +98,8 @@ define deps, ($, THREE, view, _, resource, animation) ->
         y = parseInt y
       pixelWidth = @controller.tilemap.width * @controller.tilemap.tileWidth
       pixelHeight = @controller.tilemap.height * @controller.tilemap.tileHeight
-      @sprite.position.x = x * 32
-      @sprite.position.y = y * 32
+      @sprite.position.x = x * @controller.tilemap.tileWidth
+      @sprite.position.y = y * @controller.tilemap.tileHeight
       @sprite.position.x -= (pixelWidth / 2) - (@width / 2)
       @sprite.position.y -= (pixelHeight / 2) - (@height / 2)
       @sprite.position.y *= -1
@@ -125,7 +125,7 @@ define deps, ($, THREE, view, _, resource, animation) ->
         if @velocity[0] is 0 and @velocity[1] is 0
           @moving = false
           return
-        
+
         @skip -= 1
         if @skip <= 0
           @skip = 6
