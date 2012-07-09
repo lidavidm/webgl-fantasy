@@ -5,6 +5,7 @@ define deps, ($, view, _, resource) ->
     initialize: (el, @klassOverworld) ->
       @el = $(el)
       @counter = 10
+      @resolve()
 
     update: ->
       @counter -= 1

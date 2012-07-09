@@ -111,6 +111,8 @@ define deps, ($, $2, view, _, resource, data) ->
           model: @controller.character.model }
         @el.append @characterOverlay.el
 
+      @resolve()
+
     update: ->
     overlay: (text) ->
       @elOverlay.html text
