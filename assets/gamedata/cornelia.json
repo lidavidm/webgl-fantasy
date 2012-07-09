@@ -49,6 +49,18 @@
                  "width":128,
                  "x":256,
                  "y":576
+                }, 
+                {
+                 "height":0,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "type":"npc",
+                 "width":0,
+                 "x":320,
+                 "y":448
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -60,6 +72,7 @@
  "orientation":"orthogonal",
  "properties":
     {
+     "script":"cs!game\/scripts\/cornelia",
      "start":"4,9",
      "type":"local"
     },

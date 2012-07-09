@@ -1,8 +1,8 @@
 deps = ["use!use/jquery", "use!use/Three", "use!use/Stats"
   "cs!./views", "cs!./resource", "cs!./event-keystate", "cs!./collision",
-  "cs!./models", "cs!./data"]
+  "cs!./models", "cs!./data", "cs!./scripting"]
 define deps, ($, THREE, Stats, views, resource, keystate, collision, models,
-  data) ->
+  data, scripting) ->
 
   WIDTH = 640
   HEIGHT = 640
@@ -28,6 +28,7 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision, models,
 
   class Controller
     constructor: ->
+      @scripting = new scripting.ScriptingEngine @
       @camera = new THREE.OrthographicCamera -WIDTH / 2, WIDTH / 2, HEIGHT /
         2, -HEIGHT / 2, 0, 100
 
@@ -138,8 +139,8 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision, models,
       @santi.behavesAs models.Santiago
 
       @tilemap = @addView(views.Tilemap, null,
-        resource.loadJSON ("/gamedata/test2.json?t="+(new Date).getTime()))
-      #@npcs = @addView(views.NonPlayerCharacter, null, null)
+        resource.loadJSON ("/gamedata/cornelia.json?t="+(new Date).getTime()))
+      @npcs = @addView(views.NonPlayerCharacters, null, null)
       @character = @addView(
         views.Character,
         @santi,

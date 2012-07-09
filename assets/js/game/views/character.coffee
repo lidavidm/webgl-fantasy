@@ -105,6 +105,8 @@ define deps, ($, THREE, view, _, resource, animation) ->
       @sprite.position.y *= -1
       @controller.cameraView.setPosition @sprite.position
 
+      @controller.scripting.trigger "entered"
+
     update: =>
       if @moving
         @sprite.position.x += @velocity[0]
