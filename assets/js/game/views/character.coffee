@@ -8,7 +8,6 @@ define deps, ($, THREE, view, _, resource, animation) ->
 
       @texture.done @initializeSprite
 
-      @deferred = @texture.deferred
       @teleporting = false
 
     initializeSprite: =>
@@ -106,6 +105,7 @@ define deps, ($, THREE, view, _, resource, animation) ->
       @controller.cameraView.setPosition @sprite.position
 
       @controller.scripting.trigger "entered"
+      @resolve()
 
     update: =>
       if @moving

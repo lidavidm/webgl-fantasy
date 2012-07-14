@@ -3,8 +3,7 @@ define deps, ($, THREE, view, animation) ->
   class NonPlayerCharacters extends view.View
     initialize: (args...) ->
       @sprites = {}
-      @deferred = new $.Deferred
-      @deferred.resolve()
+      @resolve()
 
     addSprite: (name, texture, callback=->) ->
       texture.done =>
