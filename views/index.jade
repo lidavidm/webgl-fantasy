@@ -36,3 +36,13 @@ html
                 
     script(type="text/template")#templ-inventory-item
       <li class="inventory-item" data-item-id="<%= item.id %>"><%= item.name %></li>
+
+    script(type="text/template")#templ-dialogue-overlay
+      div.inner
+        div.main
+          div.hear
+            | Person: text!
+          div.say
+            ul
+              li Response
+              li Response 2

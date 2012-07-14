@@ -11,7 +11,7 @@ define ["use!use/jquery", "use!use/backbone"], ($) ->
 
     resolve: ->
       if @pipeline.length > 0
-        $.when @pipeline..., =>
+        $.when(@pipeline...).done =>
           @deferred.resolve()
           @pipeline = []
       else

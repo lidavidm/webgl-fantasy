@@ -88,6 +88,24 @@ define deps, ($, $2, view, _, resource, data) ->
           { duration: ANIMATION_SPEED.SLOW }
 
 
+  class DialogueOverlay extends view.UIView
+    tagName: "div"
+
+    template: _.template $("#templ-dialogue-overlay").html()
+
+    hide: ->
+      $(@el).fadeOut ANIMATION_SPEED.FAST
+
+    show: ->
+      @render()
+      $(@el).fadeIn ANIMATION_SPEED.FAST
+
+    render: =>
+      $(@el)
+        .addClass('templ-dialogue-overlay')
+        .html(@template { data: @model.toJSON() })
+
+
   class WorldUI extends view.View
     initialize: (el, args...) ->
       @el = $(el)

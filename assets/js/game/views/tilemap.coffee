@@ -7,7 +7,6 @@ define ["use!use/jquery", "use!use/Three", "cs!../view", "cs!../resource"],
         @meshes = []
         map.done =>
           @initializeMap(map.path, map.data)
-        @deferred = new $.Deferred
 
       update: =>
 
@@ -16,6 +15,13 @@ define ["use!use/jquery", "use!use/Three", "cs!../view", "cs!../resource"],
         [@tileHeight, @tileWidth] = [mapJson.tileheight, mapJson.tilewidth]
         @properties = mapJson["properties"]
 
+        if @properties.script?
+          @controller.scripting.loadScript @properties.script, =>
+            @initializeMapPlane(path, mapJson)
+        else
+          @initializeMapPlane(path, mapJson)
+
+      initializeMapPlane: (path, mapJson) ->
         @controller.npcs.clear()
 
         @tilesets = []
@@ -94,11 +100,7 @@ define ["use!use/jquery", "use!use/Three", "cs!../view", "cs!../resource"],
             @meshes.push [mesh, position]
             position += 1
 
-          if @properties.script?
-            @controller.scripting.loadScript @properties.script, =>
-              @deferred.resolve()
-          else
-            @deferred.resolve()
+        @resolve()
 
       parseObjects: (layerData) ->
         pixelWidth = @width * @tileWidth
@@ -116,6 +118,8 @@ define ["use!use/jquery", "use!use/Three", "cs!../view", "cs!../resource"],
             @controller.collision.addRect object
 
           if object.type is "npc"
+            deferred = new $.Deferred
+            @defer deferred
             @controller.npcs.addSprite "thief",
               resource.loadTexture("/gamedata/thief.png"),
               (thief, animation) =>
@@ -123,9 +127,8 @@ define ["use!use/jquery", "use!use/Three", "cs!../view", "cs!../resource"],
                 thief.position.y = object.y
                 animation.switchGroup "down"
                 animation.next()
-                console.log "trigger"
                 @controller.scripting.trigger "loadedNPC", "thief", thief, animation
-
+                deferred.resolve()
 
           # plane = new THREE.PlaneGeometry(object.width, object.height, 32, 32)
           # mesh = new THREE.Mesh plane, new THREE.MeshBasicMaterial {
@@ -140,6 +143,7 @@ define ["use!use/jquery", "use!use/Three", "cs!../view", "cs!../resource"],
       changeTo: (resource) ->
         resource.done =>
           @controller.collision.clear()
+          @controller.scripting.clear()
           @objects = []
           for mesh in @meshes
             [mesh, layer] = mesh
