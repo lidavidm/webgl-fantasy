@@ -125,6 +125,13 @@ define ["use!use/jquery", "use!use/Three", "cs!../view", "cs!../resource"],
               (thief, animation) =>
                 thief.position.x = object.x
                 thief.position.y = object.y
+
+                @controller.collision.addRect
+                  x: object.x
+                  y: object.y - 16
+                  width: 64
+                  height: 64
+
                 animation.switchGroup "down"
                 animation.next()
                 @controller.scripting.trigger "loadedNPC", "thief", thief, animation
