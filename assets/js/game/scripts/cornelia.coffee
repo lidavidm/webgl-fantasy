@@ -1,6 +1,8 @@
-define
-  entered: (controller) ->
-    console.log "entered"
+define ["cs!./script-base"], (base) ->
+  return {
+    entered: (controller) ->
+      console.log "entered"
 
-  loadedNPC: (controller, name, sprite, animation) ->
-    console.log name, sprite
+    loadedNPC: base.global (controller, name, sprite, animation) ->
+      console.log name, sprite
+    }
