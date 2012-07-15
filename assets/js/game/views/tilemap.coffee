@@ -1,5 +1,6 @@
-define ["use!use/jquery", "use!use/Three", "cs!../view", "cs!../resource"],
-  ($, THREE, view, resource) ->
+deps = ["use!use/jquery", "use!use/Three", "cs!../view", "cs!../resource", "cs!../data"]
+define deps,
+  ($, THREE, view, resource, data) ->
     class Tilemap extends view.View
 
       initialize: (map) ->
@@ -120,9 +121,12 @@ define ["use!use/jquery", "use!use/Three", "cs!../view", "cs!../resource"],
           if object.type is "npc"
             deferred = new $.Deferred
             @defer deferred
+            npc = data[object.properties["object"]]
+            console.log npc
             @controller.npcs.addSprite "thief",
               resource.loadTexture("/gamedata/thief.png"),
               (thief, animation) =>
+                # TODO: this should really go in NonPlayerCharacters view
                 thief.position.x = object.x
                 thief.position.y = object.y
 
@@ -131,6 +135,16 @@ define ["use!use/jquery", "use!use/Three", "cs!../view", "cs!../resource"],
                   y: object.y - 16
                   width: 64
                   height: 64
+
+                @controller.activatable.addRect
+                  x: object.x
+                  y: object.y
+                  width: 64
+                  height: 64
+                  properties:
+                    npc: thief
+                    animation: animation
+                    name: "thief"
 
                 animation.switchGroup "down"
                 animation.next()
@@ -150,6 +164,7 @@ define ["use!use/jquery", "use!use/Three", "cs!../view", "cs!../resource"],
       changeTo: (resource) ->
         resource.done =>
           @controller.collision.clear()
+          @controller.activable.clear()
           @controller.scripting.clear()
           @objects = []
           for mesh in @meshes

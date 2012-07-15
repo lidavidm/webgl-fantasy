@@ -30,6 +30,10 @@
     <property name="teleport" value="test2"/>
    </properties>
   </object>
-  <object type="npc" x="320" y="448"/>
+  <object type="npc" x="320" y="448">
+   <properties>
+    <property name="object" value="77afe1cd-9dcc-4332-867a-0b6329143d53"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>
