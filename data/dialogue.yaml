@@ -1,0 +1,12 @@
+id: 8a2447a0-5163-4f7f-b2ee-d25b0e81423e
+starter: npc
+say:
+  accept: "Okay! Okay!"
+  fight: "Never! (battle)"
+hear:
+  start: "Give me your money!"
+progression:
+  start: [accept, fight]
+  accept: start
+  fight: "@dialogue_end()"
+start: "start"
