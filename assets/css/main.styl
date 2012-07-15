@@ -1,5 +1,6 @@
 $ui-character-fg = #444
 $ui-font-size = 18px
+$ui-bg = #DDDDDDDD
 
 body
   margin 0
@@ -32,7 +33,7 @@ canvas
     width 620px
     height 620px
     margin auto
-    background-color #DDDDDDDD
+    background-color $ui-bg
     div.inner
       margin 0.25em
 
@@ -57,6 +58,13 @@ canvas
        height 100%
        line-height 100%
        display inline-block
+
+  .templ-dialogue-overlay
+    width 620px
+    margin auto
+    background-color $ui-bg
+    div.inner
+      margin 0.25em
 
   div.main
     div.inventory, div.equip

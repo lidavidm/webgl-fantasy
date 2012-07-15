@@ -1,5 +1,5 @@
-deps = ["use!use/jquery", "use!use/underscore", "use!use/backbone"]
-define deps, ($, _, Backbone) ->
+deps = ["use!use/jquery", "use!use/underscore", "use!use/backbone", "cs!./data"]
+define deps, ($, _, Backbone, data) ->
   class EventEngine
     constructor: ->
       _.extend @, Backbone.Events
@@ -36,7 +36,7 @@ define deps, ($, _, Backbone) ->
       @needToClear = {}
 
     trigger: (event, args...) ->
-      @events.trigger event, @controller, args...
+      @events.trigger event, @controller, data, args...
 
   return {
     ScriptingEngine: ScriptingEngine

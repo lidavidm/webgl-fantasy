@@ -145,7 +145,9 @@ define deps,
 
                 animation.switchGroup "down"
                 animation.next()
-                @controller.scripting.trigger "loadedNPC", "thief", thief, animation
+                @controller.scripting.trigger(
+                  "loadedNPC", "thief", thief, animation, npc
+                  )
                 deferred.resolve()
 
           # plane = new THREE.PlaneGeometry(object.width, object.height, 32, 32)

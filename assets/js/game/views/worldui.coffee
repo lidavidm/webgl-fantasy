@@ -95,15 +95,18 @@ define deps, ($, $2, view, _, resource, data) ->
 
     hide: ->
       $(@el).fadeOut ANIMATION_SPEED.FAST
+      @callback() unless not @callback?
 
-    show: ->
+    show: (@callback) ->
       @render()
       $(@el).fadeIn ANIMATION_SPEED.FAST
 
     render: =>
       $(@el)
         .addClass('templ-dialogue-overlay')
-        .html(@template { data: @model.toJSON() })
+        .html(@template { tree: @tree })
+
+    tree: (@tree) ->
 
 
   class WorldUI extends view.View
@@ -129,9 +132,19 @@ define deps, ($, $2, view, _, resource, data) ->
           model: @controller.character.model }
         @el.append @characterOverlay.el
 
+      @dialogueOverlay = new DialogueOverlay
+      @el.append @dialogueOverlay.el
+
       @resolve()
 
     update: ->
+
+    dialogue: (tree) ->
+      @controller.pause @
+      @dialogueOverlay.tree tree
+      @dialogueOverlay.show =>
+        @controller.unpause()
+
     overlay: (text) ->
       @elOverlay.html text
 
