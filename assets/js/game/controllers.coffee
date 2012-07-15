@@ -1,8 +1,8 @@
-deps = ["use!use/jquery", "use!use/Three", "use!use/Stats"
+deps = ["use!use/jquery", "use!use/Three", "use!use/Stats", "use!use/tween",
   "cs!./views", "cs!./resource", "cs!./event-keystate", "cs!./collision",
   "cs!./models", "cs!./data", "cs!./scripting"]
-define deps, ($, THREE, Stats, views, resource, keystate, collision, models,
-  data, scripting) ->
+define deps, ($, THREE, Stats, TWEEN,
+  views, resource, keystate, collision, models, data, scripting) ->
 
   WIDTH = 640
   HEIGHT = 640
@@ -74,6 +74,7 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision, models,
         @renderer.render scene, @camera
 
     update: ->
+      TWEEN.update()
       for view in @views
         view.update()
 
@@ -83,6 +84,7 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision, models,
         @paused = true
         @keyState.pause()
         @update = =>
+          TWEEN.update()
           for view in pauseViews
             view.update()
 

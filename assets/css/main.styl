@@ -1,6 +1,7 @@
 $ui-character-fg = #444
 $ui-font-size = 18px
 $ui-bg = #DDDDDDDD
+$ui-bg-contrast = #33333333
 
 body
   margin 0
@@ -29,13 +30,15 @@ canvas
   ul
     margin 0
 
-  .templ-character-overlay
-    width 620px
-    height 620px
+  .ui-overlay
     margin auto
     background-color $ui-bg
     div.inner
       margin 0.25em
+
+  .templ-character-overlay
+    width 620px
+    height 620px
 
    div.topbar
      height 2em
@@ -61,10 +64,31 @@ canvas
 
   .templ-dialogue-overlay
     width 620px
-    margin auto
-    background-color $ui-bg
-    div.inner
-      margin 0.25em
+    background-color transparent
+
+    div.history, div.choices
+      background-color $ui-bg
+      padding 0.25em
+
+    div.history
+      max-height 100px
+      overflow-y auto
+
+    div.choices
+      margin-top 1em
+        
+      ol
+        margin 0
+        li:hover
+          background-color $ui-bg-contrast
+          
+    .person::after
+      content ": "
+        
+    div.heard
+      text-align left
+    div.said
+      text-align right
 
   div.main
     div.inventory, div.equip

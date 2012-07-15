@@ -32,6 +32,10 @@ require.config({
             attach: function(_, $) {
                 return Backbone;
             }
+        },
+
+        "use/tween": {
+            attach: "TWEEN"
         }
     }
 });

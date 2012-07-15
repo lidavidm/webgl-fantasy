@@ -22,6 +22,7 @@ define deps, ($, $2, view, _, resource, data) ->
     render: =>
       $(@el)
         .addClass('templ-character-overlay')
+        .addClass('ui-overlay')
         .html(@template { data: @model.toJSON(), inventoryItem: @templateInventoryItem })
 
       equip = @model.get 'equip'
@@ -92,6 +93,9 @@ define deps, ($, $2, view, _, resource, data) ->
     tagName: "div"
 
     template: _.template $("#templ-dialogue-overlay").html()
+    saidTemplate: _.template $("#templ-dialogue-said").html()
+    heardTemplate: _.template $("#templ-dialogue-heard").html()
+    sayTemplate: _.template $("#templ-dialogue-say").html()
 
     hide: ->
       $(@el).fadeOut ANIMATION_SPEED.FAST
@@ -101,12 +105,56 @@ define deps, ($, $2, view, _, resource, data) ->
       @render()
       $(@el).fadeIn ANIMATION_SPEED.FAST
 
+    addToHistory: (role, name, text) ->
+      if role is 'npc'
+        $(@el).find('.history').append @heardTemplate
+          name: name
+          text: text
+      else if role is 'party'
+        $(@el).find('.history').append @saidTemplate
+          name: name
+          text: text
+      $('.history').scrollTo
+      $(".history").animate {
+        scrollTop: $(".history").prop("scrollHeight") - $('.history').height()
+        }, ANIMATION_SPEED.FAST / 2
+
+    npcSays: (choice) ->
+      @addToHistory 'npc', @npc.name, @tree.hear[choice]
+      choices = @tree.progression[choice]
+      for choice in choices
+        $(@sayTemplate { text: @tree.say[choice] })
+          .click(@handleSay)
+          .data('choice', choice)
+          .appendTo(@choices)
+
+    partySays: (choice) ->
+      @addToHistory 'party', "Santiago", @tree.say[choice]
+      @choices.html('')
+      reaction = @tree.progression[choice]
+      if @tree.hear[reaction]?
+        @npcSays reaction
+      else
+        @hide()
+
+    handleSay: (e) =>
+      choice = $(e.target).data('choice')
+      @partySays choice
+
     render: =>
       $(@el)
         .addClass('templ-dialogue-overlay')
-        .html(@template { tree: @tree })
+        .addClass('ui-overlay')
+        .html(@template { tree: @tree, npc: @npc })
+        .hide()
+
+      @choices = $(@el).find('.choices ol')
+
+      if @tree.starter is 'npc'
+        @npcSays @tree.start
 
     tree: (@tree) ->
+    npc: (@npc) ->
 
 
   class WorldUI extends view.View
@@ -132,18 +180,21 @@ define deps, ($, $2, view, _, resource, data) ->
           model: @controller.character.model }
         @el.append @characterOverlay.el
 
-      @dialogueOverlay = new DialogueOverlay
-      @el.append @dialogueOverlay.el
+        @dialogueOverlay = new DialogueOverlay {
+          model: @controller.character.model }
+        @el.append @dialogueOverlay.el
 
-      @resolve()
+        @resolve()
 
     update: ->
 
-    dialogue: (tree) ->
+    dialogue: (npc, tree, callback=->) ->
       @controller.pause @
+      @dialogueOverlay.npc npc
       @dialogueOverlay.tree tree
       @dialogueOverlay.show =>
         @controller.unpause()
+        callback()
 
     overlay: (text) ->
       @elOverlay.html text
