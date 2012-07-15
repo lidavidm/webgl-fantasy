@@ -161,7 +161,7 @@ define deps,
       changeTo: (resource) ->
         resource.done =>
           @controller.collision.clear()
-          @controller.activable.clear()
+          @controller.activatable.clear()
           @controller.scripting.clear()
           @objects = []
           for mesh in @meshes
