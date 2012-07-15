@@ -149,6 +149,7 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision, models,
       @cameraView = @addView views.Camera, null, @camera
 
       @collision = new collision.CollisionManager
+      @activatable = new collision.CollisionManager
 
       @ui = @addView views.WorldUI, null, $("#ui")
 

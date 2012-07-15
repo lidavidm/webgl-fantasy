@@ -57,6 +57,15 @@ define deps, ($, THREE, view, _, resource, animation) ->
                   "/gamedata/" + @teleport + ".json?t="+((new Date).getTime())
                 ))
               @teleporting = true
+          when 65
+            activatable = @controller.activatable.faces {
+              x: @sprite.position.x
+              y: @sprite.position.y
+              height: @height
+              width: @width
+              },
+              'x', 1, 1
+            console.log activatable
         if @velocity[0] or @velocity[1]
           @moving = true
           @skip = 0
