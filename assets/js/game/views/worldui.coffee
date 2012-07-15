@@ -35,17 +35,30 @@ define deps, ($, $2, view, _, resource, data) ->
         .find('.inventory-item')
         .draggable
           revert: true
+          start: (event, ui) =>
+            itemId = $(event.target).data 'itemId'
+
+            for slot in $(@el).find('.equip-slot')
+              slotEl = slot
+              slot = $.trim $(slot).html()
+              slot = slot.substring(0, slot.length - 1)
+              if slot in @model.behavior.equipSlots(@model.inventory.find itemId)
+                $(slotEl).addClass 'allowable', ANIMATION_SPEED.FAST
+          stop: =>
+            $(@el).find('.equip-slot').removeClass 'allowable', ANIMATION_SPEED.FAST
 
       $(@el)
         .find('.inventory ul')
         .droppable
           drop: (event, ui) =>
             $(ui.draggable).appendTo($(event.target)).css { left: 0, top: 0 }
+            $(@el).find('.equip-slot').removeClass 'allowable', ANIMATION_SPEED.FAST
 
       $(@el)
         .find('.equip-slot')
         .droppable
           drop: (event, ui) =>
+            $(@el).find('.equip-slot').removeClass 'allowable', ANIMATION_SPEED.FAST
             itemId = $(ui.draggable).data('itemId')
 
             slot = $.trim $(event.target).html()
