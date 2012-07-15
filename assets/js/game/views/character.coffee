@@ -53,9 +53,8 @@ define deps, ($, THREE, view, _, resource, animation) ->
           when 32
             if @teleport? and not @teleporting
               @controller.tilemap.changeTo(
-                resource.loadJSON(
-                  "/gamedata/" + @teleport + ".json?t="+((new Date).getTime())
-                ))
+                resource.loadJSON(@teleport + ".json?t="+((new Date).getTime()))
+                )
               @teleporting = true
           when 65
             activatable = @controller.activatable.faces {

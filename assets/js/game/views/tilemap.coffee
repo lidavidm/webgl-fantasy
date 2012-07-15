@@ -7,29 +7,27 @@ define deps,
         @objects = []
         @meshes = []
         map.done =>
-          @initializeMap(map.path, map.data)
+          @initializeMap(map.data)
 
       update: =>
 
-      initializeMap: (path, mapJson) ->
+      initializeMap: (mapJson) ->
         [@height, @width] = [mapJson.height, mapJson.width]
         [@tileHeight, @tileWidth] = [mapJson.tileheight, mapJson.tilewidth]
         @properties = mapJson["properties"]
 
         if @properties.script?
           @controller.scripting.loadScript @properties.script, =>
-            @initializeMapPlane(path, mapJson)
+            @initializeMapPlane(mapJson)
         else
-          @initializeMapPlane(path, mapJson)
+          @initializeMapPlane(mapJson)
 
-      initializeMapPlane: (path, mapJson) ->
+      initializeMapPlane: (mapJson) ->
         @controller.npcs.clear()
 
         @tilesets = []
         for ts in mapJson.tilesets
-          @tilesets.push [resource.loadTexture(
-            resource.Path.join(path, ts.image)
-            ), []]
+          @tilesets.push [resource.loadTexture(resource.Path.split(ts.image)[1]), []]
         # Only the first tileset needs a padding tile since TMX is
         # zero-indexed
         @tilesets[0][1].push [
@@ -122,9 +120,8 @@ define deps,
             deferred = new $.Deferred
             @defer deferred
             npc = data[object.properties["object"]]
-            console.log npc
             @controller.npcs.addSprite "thief",
-              resource.loadTexture("/gamedata/thief.png"),
+              resource.loadTexture(npc.texture),
               (thief, animation) =>
                 # TODO: this should really go in NonPlayerCharacters view
                 thief.position.x = object.x
@@ -170,7 +167,7 @@ define deps,
           for mesh in @meshes
             [mesh, layer] = mesh
             @scene.remove mesh, layer
-          @initializeMap resource.path, resource.data
+          @initializeMap resource.data
           # since the character has already been loaded by now
           @controller.character.setSpritePosition()
 

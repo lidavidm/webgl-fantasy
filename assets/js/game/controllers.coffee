@@ -139,12 +139,12 @@ define deps, ($, THREE, Stats, views, resource, keystate, collision, models,
       @santi.behavesAs models.Santiago
 
       @tilemap = @addView(views.Tilemap, null,
-        resource.loadJSON ("/gamedata/cornelia.json?t="+(new Date).getTime()))
+        resource.loadJSON ("cornelia.json?t="+(new Date).getTime()))
       @npcs = @addView(views.NonPlayerCharacters, null, null)
       @character = @addView(
         views.Character,
         @santi,
-        resource.loadTexture "/gamedata/fighter.png"
+        resource.loadTexture "fighter.png"
         )
       @cameraView = @addView views.Camera, null, @camera
 

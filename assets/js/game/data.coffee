@@ -14,7 +14,7 @@ define ["use!use/jquery"], ($) ->
           return key
       return false
 
-  $.getJSON "/gamedata/all.json", (allData) ->
+  $.getJSON "/gamedata/json/all.json", (allData) ->
     for id of allData
       data[id] = allData[id]
     loaded.resolve()

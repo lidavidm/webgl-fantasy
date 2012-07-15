@@ -1,8 +1,14 @@
 define ["use!use/jquery", "use!use/Three"], ($, THREE) ->
+  config =
+    basePath: ''
+
   class Resource
-    constructor: (@path) ->
+    constructor: (@url) ->
       @deferred = new $.Deferred
-      
+
+    parent: ->
+      Path.split(@url)[0]
+
     done: (callback) ->
       @deferred.done callback
 
@@ -10,7 +16,15 @@ define ["use!use/jquery", "use!use/Three"], ($, THREE) ->
       @data = data
       @deferred.resolve()
 
+    @fromTypeName: (type, name) ->
+      resource = new Resource(Path.join(config.basePath, type, name))
+
+    @fromPath: (path) ->
+      resource = new Resource(path.path)
+
   class Path
+    constructor: (@path) ->
+
     @join: (paths...) ->
       normalize = (component) ->
         if component.charAt(component.length - 1) isnt "/"
@@ -18,7 +32,7 @@ define ["use!use/jquery", "use!use/Three"], ($, THREE) ->
         else
           component
       [prefix..., last] = paths
-      normalized_paths = normalize component for component in prefix
+      normalized_paths = (normalize component for component in prefix)
       normalized_paths[0].concat normalized_paths[1..]..., last
 
     @split: (path) ->
@@ -27,20 +41,28 @@ define ["use!use/jquery", "use!use/Three"], ($, THREE) ->
       tail = path.substring slash + 1
       return [head, tail]
 
-  loadJSON = (url) ->
-    path = Path.split(url)[0]
-    resource = new Resource path
-    $.getJSON url, (new Date).getTime(), (data) ->
+  setBasePath = (path) ->
+    config.basePath = path
+
+  evalReference = (reference) ->
+    # Parses statements such as @resource.texture(fighter) in tilemaps and
+    # game objects as (for example) resource.loadTexture('fighter')
+
+  loadJSON = (name) ->
+    resource = Resource.fromTypeName "json", name
+    $.getJSON resource.url, (new Date).getTime(), (data) ->
       resource.resolve data
-      
+
     return resource
 
-  loadTexture = (url) ->
-    path = Path.split(url)[0]
-    resource = new Resource path
-    texture = THREE.ImageUtils.loadTexture url, undefined, (image) ->
+  loadTexture = (name) ->
+    unless name instanceof Path
+      resource = Resource.fromTypeName "texture", name
+    else
+      resource = Resource.fromPath name
+    texture = THREE.ImageUtils.loadTexture resource.url, undefined, (image) ->
       resource.resolve texture
-      
+
     return resource
 
   return {
@@ -48,4 +70,5 @@ define ["use!use/jquery", "use!use/Three"], ($, THREE) ->
     Path: Path
     loadJSON: loadJSON
     loadTexture: loadTexture
+    setBasePath: setBasePath
     }
