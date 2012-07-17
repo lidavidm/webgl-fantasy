@@ -171,19 +171,26 @@ define deps, ($, $2, view, _, resource, data) ->
 
 
   class WorldUI extends view.View
+    @WORLD = 'world'
+    @CHARACTER = 'character'
+    @DIALOGUE = 'dialogue'
+
     initialize: (el, args...) ->
       @el = $(el)
+      @state = WorldUI.WORLD
       @elOverlay = $("<div></div>")
         .appendTo(@el)
         .css { textAlign: 'center', color: "#FFF" }
 
       @controller.keyState.on "ui_keydown", (keyCode) =>
         if keyCode is 81  # Q
-          if @controller.paused
+          if @controller.paused and @state is WorldUI.CHARACTER
+            @state = WorldUI.WORLD
             @controller.unpause()
             @showOverlay()
             @characterOverlay.hide()
-          else
+          else if @state is WorldUI.WORLD
+            @state = WorldUI.CHARACTER
             @controller.pause @
             @hideOverlay()
             @characterOverlay.show()
@@ -202,10 +209,12 @@ define deps, ($, $2, view, _, resource, data) ->
     update: ->
 
     dialogue: (npc, tree, callback=->) ->
+      @state = WorldUI.DIALOGUE
       @controller.pause @
       @dialogueOverlay.npc npc
       @dialogueOverlay.tree tree
       @dialogueOverlay.show =>
+        @state = WorldUI.WORLD
         @controller.unpause()
         callback()
 

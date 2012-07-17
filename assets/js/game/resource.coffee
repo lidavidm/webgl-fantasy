@@ -65,6 +65,22 @@ define ["use!use/jquery", "use!use/Three"], ($, THREE) ->
 
     return resource
 
+  loadSpriteSheet = (name) ->
+    unless name instanceof Path
+      resource = Resource.fromTypeName "texture", name
+    else
+      resource = Resource.fromPath name
+
+    texture = loadTexture(name)
+    json = loadJSON(name)
+
+    $.when(texture.deferred, json.deferred).done ->
+      resource.resolve
+        texture: texture
+        sheet: json
+
+    return resource
+
   return {
     Resource: Resource
     Path: Path
