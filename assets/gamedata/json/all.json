@@ -23,6 +23,121 @@
         "value": 50, 
         "name": "Steel Sword"
     }, 
+    "f646b729-5dbd-497b-9fc0-4df47cb401c3": {
+        "stats": {
+            "mana": 50, 
+            "health": 75
+        }, 
+        "name": "Santiago Ortega", 
+        "sprite": {
+            "battle": {
+                "animation": {
+                    "down": [
+                        [
+                            2, 
+                            0
+                        ], 
+                        [
+                            3, 
+                            0
+                        ]
+                    ], 
+                    "right": [
+                        [
+                            6, 
+                            0
+                        ], 
+                        [
+                            7, 
+                            0
+                        ]
+                    ], 
+                    "up": [
+                        [
+                            0, 
+                            0
+                        ], 
+                        [
+                            1, 
+                            0
+                        ]
+                    ], 
+                    "left": [
+                        [
+                            4, 
+                            0
+                        ], 
+                        [
+                            5, 
+                            0
+                        ]
+                    ]
+                }, 
+                "texture": "fighterbattle.png"
+            }, 
+            "world": {
+                "animation": {
+                    "down": [
+                        [
+                            2, 
+                            0
+                        ], 
+                        [
+                            3, 
+                            0
+                        ]
+                    ], 
+                    "right": [
+                        [
+                            6, 
+                            0
+                        ], 
+                        [
+                            7, 
+                            0
+                        ]
+                    ], 
+                    "up": [
+                        [
+                            0, 
+                            0
+                        ], 
+                        [
+                            1, 
+                            0
+                        ]
+                    ], 
+                    "left": [
+                        [
+                            4, 
+                            0
+                        ], 
+                        [
+                            5, 
+                            0
+                        ]
+                    ]
+                }, 
+                "texture": "fighter.png"
+            }
+        }, 
+        "equip": {
+            "body": null, 
+            "feet": null, 
+            "head": null, 
+            "right": null, 
+            "left": null
+        }, 
+        "inventory": [
+            "6c08efc8-e6e1-4e84-b4b2-06ca2cf66f31"
+        ], 
+        "type": "character", 
+        "id": "f646b729-5dbd-497b-9fc0-4df47cb401c3", 
+        "maxStats": {
+            "mana": 100, 
+            "health": 100
+        }
+    }, 
     "8a2447a0-5163-4f7f-b2ee-d25b0e81423e": {
         "start": "start", 
         "say": {

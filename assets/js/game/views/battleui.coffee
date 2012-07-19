@@ -1,13 +1,13 @@
 deps = ["use!use/jquery", "use!use/jquery-ui", "cs!../view", "use!use/underscore",
-  "cs!../resource", "cs!../data"]
-define deps, ($, $2, view, _, resource, data) ->
-
-  ANIMATION_SPEED =
-    FAST: 300
-    SLOW: 600
+  "cs!../resource", "cs!../data", "cs!./commonui"]
+define deps, ($, $2, view, _, resource, data, commonui) ->
+  ANIMATION_SPEED = commonui.ANIMATION_SPEED
 
   class Overlay extends view.UIView
     tagName: "div"
+    template: _.template($("#templ-battle-overlay").html())
+    statsTemplate: _.template($("#templ-battle-stats").html())
+    actionsTemplate: _.template($("#templ-battle-actions").html())
 
     hide: ->
     show: ->
@@ -17,7 +17,22 @@ define deps, ($, $2, view, _, resource, data) ->
     render: =>
       $(@el)
         .addClass('ui-overlay')
-        .html('test')
+        .addClass('templ-battle-overlay')
+        .html(@template())
+
+      $(@el).find('.stats').append($(@statsTemplate { data: @model.toJSON()}))
+
+      @hpStatbar = new commonui.Statbar($(@el).find('.statbar')[0], 'hp')
+        .maxValue(@model.get('maxStats').health)
+        .value(@model.get('stats').health)
+        .show()
+      @mpStatbar = new commonui.Statbar($(@el).find('.statbar')[1], 'mp')
+        .maxValue(@model.get('maxStats').mana)
+        .value(@model.get('stats').mana)
+        .show()
+
+      $(@el).find('.actions').append(@actionsTemplate { data: {actions: ["Attack","Fight","Run"]}})
+
 
   class BattleUI extends view.View
     initialize: (el, args...) ->

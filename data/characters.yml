@@ -1,0 +1,30 @@
+id: f646b729-5dbd-497b-9fc0-4df47cb401c3
+name: Santiago Ortega
+inventory: ["6c08efc8-e6e1-4e84-b4b2-06ca2cf66f31"]
+maxStats:
+  health: 100
+  mana: 100
+stats:
+  health: 75
+  mana: 50
+equip:
+  head: null
+  body: null
+  feet: null
+  left: null
+  right: null
+sprite:
+  world:
+    texture: "fighter.png"
+    animation:
+      up: [[0, 0], [1, 0]]
+      down: [[2, 0], [3, 0]]
+      left: [[4, 0], [5, 0]]
+      right: [[6, 0], [7, 0]]
+  battle:
+    texture: "fighterbattle.png"
+    animation:
+      up: [[0, 0], [1, 0]]
+      down: [[2, 0], [3, 0]]
+      left: [[4, 0], [5, 0]]
+      right: [[6, 0], [7, 0]]

@@ -5,14 +5,14 @@ define ["cs!./script-base"], (base) ->
 
     loadedNPC: base.global (controller, data, name, sprite, animation, object) ->
       if name is "thief"
-        controller.cameraView.scrollTo
-          x: 0.5 * (controller.character.sprite.position.x + sprite.position.x)
-          y: 0.5 * (controller.character.sprite.position.y + sprite.position.y)
-        controller.ui.dialogue object, data[object.dialogue], ->
-          controller.cameraView.scrollTo controller.character.sprite.position
-          controller.battle.start
-            sprite: sprite
-            animation: animation
-            npc: object
+        # controller.cameraView.scrollTo
+        #   x: 0.5 * (controller.character.sprite.position.x + sprite.position.x)
+        #   y: 0.5 * (controller.character.sprite.position.y + sprite.position.y)
+        # controller.ui.dialogue object, data[object.dialogue], ->
+        #   controller.cameraView.scrollTo controller.character.sprite.position
+        controller.battle.start
+          sprite: sprite
+          animation: animation
+          npc: object
 
     }

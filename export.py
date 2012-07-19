@@ -14,11 +14,12 @@ def process_docs(kind, path, data):
         data[docid] = doc
 
 
-with open("assets/gamedata/all.json", 'w') as f:
+with open("assets/gamedata/json/all.json", 'w') as f:
     for kind, path in [
-        ("weapon", "data/weapons.yaml"),
-        ("dialogue", "data/dialogue.yaml"),
-        ("npc", "data/npcs.yaml")]:
+        ("weapon", "data/weapons.yml"),
+        ("dialogue", "data/dialogue.yml"),
+        ("npc", "data/npcs.yml"),
+        ("character", "data/characters.yml")]:
         process_docs(kind, path, data)
 
     f.write(json.dumps(data, indent=4))
