@@ -1,51 +1,87 @@
 #ui .templ-battle-overlay
   width 620px
-  margin 10px auto
+  margin 0 auto
 
   .inner
     padding 5px
+    margin-top 1px !important
+    margin-bottom 0 !important
+      
+  .actions
+    display none
 
   .character
-    width 200px
+    line-height 12px
+    height 12px
+    width 600px
+    span.name
+      width 15%
+      display inline-block
+    div.statbars
+      display inline-block
+      height 12px
+      width 85%
+     .statbar
+       height 10px
+       line-height 12px
+       font-size 12px
+       display inline-block
+       margin 0 20px
+       span
+         display inline-block
+         position relative
+         top -12px
+         left 2px
+    
+    
+#ui .templ-battle-overlay.expanded
+  margin 10px auto 0 auto
+    
+  .main
+    height 36px
 
-  .stats, .actions
-    display block
-    list-style-type none
+  .character, .actions
+    display inline-block
     padding 0
     margin 0
 
+  .character
+    height 36px
+    span.name
+      vertical-align 12px
+    div.statbars
+      height 36px
+      width 16.667%
+      .statbar
+        display block
+
   .actions
+    width 67%
+    height 36px
+    margin-left 8px
+    vertical-align 11px
     ul
       list-style-type none
       padding 0
       margin 0
-      li,button
+      width 100%
+      height 36px
+      li
+        display inline-block
         margin 0
-        width 100%
         padding 0
-        border 0
-        height 18px
+        height 100%
+        width 33%
         button
-          height 16px
-
-  .stats
-    li
-      line-height 12px
-      height 24px
-      span.name
-        vertical-align 6px
-        width 98px
-        display inline-block
-    div.statbars
-      display inline-block
-      height 24px
-    .statbar
-      height 10px
-      line-height 12px
-      font-size 12px
-      display block
-      span
-        display inline-block
-        position relative
-        top -12px
-        left 2px
+          padding 0
+          margin 0
+          width 100%
+          height 100%
+          border 0
+          font-size 16px
+          line-height 100%
+          background transparent
+        button:hover
+          background #33333333
+        button:active
+          background #66666666

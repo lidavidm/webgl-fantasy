@@ -58,26 +58,25 @@ html
           div.choices
             ol
 
-    script(type="text/template")#templ-battle-stats
-      li
-        span.name <%= data.name %>
-        div.statbars
-          div.statbar.health
-            div
-          div.statbar.mana
-            div
+    script(type="text/template")#templ-battle-char
+      span.name <%= data.name %>
+      div.statbars
+        div.statbar.health
+          div
+        div.statbar.mana
+          div
+        div.statbar.cooldown
+          div
+      div.actions
 
-    script(type="text/template")#templ-battle-actions
-      li
-        ul
-          <% for (var i = 0; i < data.actions.length; i++) { %>
-          li
-            button <%= data.actions[i] %>
-          <% } %>
+  script(type="text/template")#templ-battle-actions
+      ul
+        <% for (var i = 0; i < data.actions.length; i++) { %>
+        li
+          button <%= data.actions[i] %>
+        <% } %>
 
-    script(type="text/template")#templ-battle-overlay
+  script(type="text/template")#templ-battle-overlay
       div.inner
         div.main
           div.character
-            ul.stats
-            ul.actions

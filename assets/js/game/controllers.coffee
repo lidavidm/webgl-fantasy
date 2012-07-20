@@ -140,6 +140,10 @@ define deps, ($, THREE, Stats, TWEEN,
         inventory: [ironSword, ironSword, ironSword, ironSword, ironSword]
       @santi.behavesAs models.Santiago
 
+      @elona = models.Characters.create
+        name: "Elona"
+      @elona.behavesAs models.Elona
+
       @tilemap = @addView(views.Tilemap, null,
         resource.loadJSON ("cornelia.json?t="+(new Date).getTime()))
       @npcs = @addView(views.NonPlayerCharacters, null, null)
@@ -154,7 +158,7 @@ define deps, ($, THREE, Stats, TWEEN,
       @activatable = new collision.CollisionManager
 
       @ui = @addView views.WorldUI, null, $("#ui")
-      @battle = @addView views.BattleUI, @santi, $("#ui")
+      @battle = @addView views.BattleUI, [@santi,@elona], $("#ui")
 
   return {
     Title: Title,

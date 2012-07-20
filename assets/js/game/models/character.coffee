@@ -15,6 +15,8 @@ define deps, ($, Backbone) ->
             return ["left", "right"]
       return []
 
+  class Elona extends CharacterBehavior
+
   class CharacterInventory
     constructor: (@model) ->
 
@@ -66,6 +68,8 @@ define deps, ($, Backbone) ->
 
       if attrs._id?
         @id = attrs._id
+      else
+        @id = @get 'name'
 
     behavesAs: (behavior) ->
       @behavior = new behavior @
@@ -81,4 +85,5 @@ define deps, ($, Backbone) ->
     Character: Character
     Characters: Characters
     Santiago: Santiago
+    Elona: Elona
     }

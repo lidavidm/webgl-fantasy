@@ -6,13 +6,34 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
   class Overlay extends view.UIView
     tagName: "div"
     template: _.template($("#templ-battle-overlay").html())
-    statsTemplate: _.template($("#templ-battle-stats").html())
+    charTemplate: _.template($("#templ-battle-char").html())
     actionsTemplate: _.template($("#templ-battle-actions").html())
 
+    events:
+      "mouseenter .main": "mouseover"
+      "mouseleave .main": "mouseout"
+
     hide: ->
+      @
+
     show: ->
       @render()
-      $(@el).fadeIn(ANIMATION_SPEED.FAST).slideDown(ANIMATION_SPEED.FAST)
+      $(@el).fadeIn(ANIMATION_SPEED.FAST)
+      @
+
+    expand: ->
+      $(@el)
+        .addClass('expanded', ANIMATION_SPEED.FAST)
+
+    contract: ->
+      $(@el)
+        .removeClass('expanded', ANIMATION_SPEED.FAST)
+
+    mouseover: =>
+      @expand()
+
+    mouseout: =>
+      @contract()
 
     render: =>
       $(@el)
@@ -20,7 +41,8 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
         .addClass('templ-battle-overlay')
         .html(@template())
 
-      $(@el).find('.stats').append($(@statsTemplate { data: @model.toJSON()}))
+      character = $(@el).find('.character')
+        .append($(@charTemplate { data: @model.toJSON()}))
 
       @hpStatbar = new commonui.Statbar($(@el).find('.statbar')[0], 'hp')
         .maxValue(@model.get('maxStats').health)
@@ -30,21 +52,30 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
         .maxValue(@model.get('maxStats').mana)
         .value(@model.get('stats').mana)
         .show()
+      @cooldownStatbar = new commonui.Statbar($(@el).find('.statbar')[2], 'cooldown')
+        .maxValue(5)
+        .value(2.5)
+        .show()
 
-      $(@el).find('.actions').append(@actionsTemplate { data: {actions: ["Attack","Fight","Run"]}})
+      character.find('.actions')
+        .append(@actionsTemplate { data: {actions: ["Attack","Fight","Run"]}})
 
 
   class BattleUI extends view.View
     initialize: (el, args...) ->
       @el = $(el)
-      @overlay = new Overlay
-          model: @model
-      @el.append @overlay.el
+      @overlays = {}
+      for model in @model
+        console.log model
+        @overlays[model.id] = new Overlay
+          model: model
+        @el.append @overlays[model.id].el
       @resolve()
 
     start: (@enemies...) ->
       @controller.pause @
-      @overlay.show()
+      @overlays[@model[0].id].show().expand()
+      @overlays[@model[1].id].show()
 
   return {
     BattleUI: BattleUI
