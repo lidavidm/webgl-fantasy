@@ -3,8 +3,8 @@ deps = ["use!use/jquery", "use!use/Three", "cs!../view", "use!use/underscore",
 define deps, ($, THREE, view, _, resource, animation) ->
   class Character extends view.View
     initialize: (@texture) ->
-      @width = 16
-      @height = 16
+      @width = 32
+      @height = 32
 
       @texture.done @initializeSprite
 

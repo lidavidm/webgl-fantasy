@@ -135,9 +135,7 @@ define deps, ($, THREE, Stats, TWEEN,
 
       ironSword = data[data.find { name: "Iron Sword" }]
 
-      @santi = models.Characters.create
-        name: "Santiago"
-        inventory: [ironSword, ironSword, ironSword, ironSword, ironSword]
+      @santi = models.Characters.create data['f646b729-5dbd-497b-9fc0-4df47cb401c3']
       @santi.behavesAs models.Santiago
 
       @elona = models.Characters.create
