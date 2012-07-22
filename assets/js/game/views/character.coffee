@@ -9,6 +9,9 @@ define deps, ($, THREE, view, _, resource, animation) ->
       resource.loadSpriteModel(@model.get('sprite').world)
         .done(@initializeWorldSprite)
 
+      resource.loadSpriteModel(@model.get('sprite').battle)
+        .done(@initializeBattleSprite)
+
       @teleporting = false
 
     initializeWorldSprite: (@sprite, @animation) =>
@@ -68,6 +71,11 @@ define deps, ($, THREE, view, _, resource, animation) ->
       @moving = false
 
       @controller.tilemap.deferred.done @setSpritePosition
+
+    initializeBattleSprite: (@battleSprite, @battleAnimation) =>
+      @scene.add @battleSprite, 2
+      @battleAnimation.switchGroup "up"
+      @battleSprite.scale.x = @battleSprite.scale.y = 1 / 4
 
     setSpritePosition:  =>
       properties = @controller.tilemap.properties

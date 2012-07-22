@@ -96,16 +96,16 @@ define deps, ($, THREE, animation) ->
       sprite.uvScale.x = 1 / 8
       sprite.position.y = 32
 
-      animation = new animation.SpriteFrameAnimation(
+      anim = new animation.SpriteFrameAnimation(
         sprite,
         texture.data,
         textureData.frameSize.width,
         textureData.frameSize.height)
 
       for group of textureData.animation
-        animation.addGroup group, textureData.animation[group]...
+        anim.addGroup group, textureData.animation[group]...
 
-      resource.resolve sprite, animation
+      resource.resolve sprite, anim
 
     return resource
 
