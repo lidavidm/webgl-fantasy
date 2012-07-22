@@ -1,6 +1,7 @@
 #ui .templ-battle-overlay
   width 620px
-  margin 0 auto
+  margin 2px auto
+  padding 2px 0
 
   .inner
     padding 5px
@@ -14,24 +15,25 @@
     line-height 12px
     height 12px
     width 600px
-    span.name
+    .name
       width 15%
       display inline-block
+      height 100%
     div.statbars
       display inline-block
       height 12px
       width 85%
-     .statbar
-       height 10px
-       line-height 12px
-       font-size 12px
-       display inline-block
-       margin 0 20px
-       span
-         display inline-block
-         position relative
-         top -12px
-         left 2px
+      .statbar
+        height 10px
+        line-height 12px
+        font-size 12px
+        display inline-block
+        margin-right 20px
+        span
+          display inline-block
+          position relative
+          top -12px
+          left 2px
     
     
 #ui .templ-battle-overlay.expanded
@@ -47,13 +49,15 @@
 
   .character
     height 36px
-    span.name
-      vertical-align 12px
+    .name
+      position relative
+      top -12px
     div.statbars
       height 36px
       width 16.667%
       .statbar
         display block
+        margin 0
 
   .actions
     width 67%

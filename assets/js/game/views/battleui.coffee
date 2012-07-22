@@ -10,8 +10,7 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
     actionsTemplate: _.template($("#templ-battle-actions").html())
 
     events:
-      "mouseenter .main": "mouseover"
-      "mouseleave .main": "mouseout"
+      "click .name": "toggle"
 
     hide: ->
       @
@@ -21,18 +20,18 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
       $(@el).fadeIn(ANIMATION_SPEED.FAST)
       @
 
-    expand: ->
-      $(@el)
-        .addClass('expanded', ANIMATION_SPEED.FAST)
+    toggle: ->
+      if $(@el).hasClass 'expanded'
+        $(@el)
+          .removeClass('expanded', ANIMATION_SPEED.FAST)
+      else
+        $(@el)
+          .addClass('expanded', ANIMATION_SPEED.FAST)
 
-    contract: ->
-      $(@el)
-        .removeClass('expanded', ANIMATION_SPEED.FAST)
-
-    mouseover: =>
+    mousedown: =>
       @expand()
 
-    mouseout: =>
+    mouseup: =>
       @contract()
 
     render: =>
@@ -74,7 +73,7 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
 
     start: (@enemies...) ->
       @controller.pause @
-      @overlays[@model[0].id].show().expand()
+      @overlays[@model[0].id].show().toggle()
       @overlays[@model[1].id].show()
 
   return {

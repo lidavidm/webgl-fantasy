@@ -147,9 +147,7 @@ define deps, ($, THREE, Stats, TWEEN,
       @npcs = @addView(views.NonPlayerCharacters, null, null)
       @character = @addView(
         views.Character,
-        @santi,
-        resource.loadTexture "fighter.png"
-        )
+        @santi)
       @cameraView = @addView views.Camera, null, @camera
 
       @collision = new collision.CollisionManager

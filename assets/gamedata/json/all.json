@@ -73,6 +73,10 @@
                         ]
                     ]
                 }, 
+                "frameSize": {
+                    "width": 64, 
+                    "height": 64
+                }, 
                 "texture": "fighterbattle.png"
             }, 
             "world": {
@@ -117,6 +121,10 @@
                             0
                         ]
                     ]
+                }, 
+                "frameSize": {
+                    "width": 32, 
+                    "height": 32
                 }, 
                 "texture": "fighter.png"
             }

@@ -16,6 +16,9 @@ equip:
 sprite:
   world:
     texture: "fighter.png"
+    frameSize:
+      width: 32
+      height: 32
     animation:
       up: [[0, 0], [1, 0]]
       down: [[2, 0], [3, 0]]
@@ -23,6 +26,9 @@ sprite:
       right: [[6, 0], [7, 0]]
   battle:
     texture: "fighterbattle.png"
+    frameSize:
+      width: 64
+      height: 64
     animation:
       up: [[0, 0], [1, 0]]
       down: [[2, 0], [3, 0]]
