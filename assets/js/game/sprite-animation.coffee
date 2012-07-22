@@ -8,7 +8,7 @@ define ->
       @heightInFrames = @texture.image.height / @height
       @deltaX = @width / @texture.image.width
       @deltaY = @height / @texture.image.height
-  
+
     addGroupFrames: (name, frames) ->
       @groups[name] = frames
 
@@ -23,7 +23,7 @@ define ->
         if start[0] >= @widthInFrames
           start[0] = 0
           start[1] += @deltaY
-  
+
       @addGroupFrames(name, frames)
 
     switchGroup: (name) ->
@@ -31,8 +31,12 @@ define ->
       @currentFrame = 0
 
     next: ->
+      reset = false
       @currentFrame += 1
-      if @currentFrame >= @currentGroup.length then @currentFrame = 0
+      if @currentFrame >= @currentGroup.length
+        @currentFrame = 0
+        reset = true
       @sprite.uvOffset.set @currentGroup[@currentFrame]...
+      return reset
 
   return { SpriteFrameAnimation: SpriteFrameAnimation }

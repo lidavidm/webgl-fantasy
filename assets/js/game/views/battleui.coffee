@@ -30,8 +30,23 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
           .addClass('expanded', ANIMATION_SPEED.FAST)
 
     actionHandler: (e) ->
-      if $(e.target).data('action') is 'attack'
-        @options.spriteManager.play @model.get('name'), 'battle', 'left'
+      action = $(e.target).data('action')
+      action = @model.behavior['action_' + action]
+      result = action()
+
+      playTimes = result.hits
+      playAnim = (anim) =>
+        if playTimes > 0
+          @options.spriteManager.play @model.get('name'), 'battle', anim, ->
+            playAnim(anim)
+
+        playTimes -= 1
+
+      if result.hitAnimation?
+        for anim in result.hitAnimation
+          playAnim(anim)
+
+      console.log result.hits * result.damage
 
     mousedown: =>
       @expand()
@@ -62,7 +77,7 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
         .show()
 
       character.find('.actions')
-        .append(@actionsTemplate { data: {actions: ["Attack","Spell","Run"]}})
+        .append(@actionsTemplate { data: {actions: @model.behavior.actions}})
 
 
   class Battle extends view.View
@@ -95,7 +110,7 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
   class BattleSpriteManager
     constructor: ->
       @sprites = {}
-      @animate = []
+      @animate = {}
       @ticks = 6
 
     addCharacter: (characterView) ->
@@ -107,21 +122,24 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
       characterView.battleSprite.position = characterView.sprite.position.clone()
       characterView.battleSprite.opacity = 0
 
-    play: (name, type, anim) ->
-      console.log 'play', @sprites[name][type], name, anim
+    play: (name, type, anim, callback=->) ->
       animation = @sprites[name][type][1]
       animation.switchGroup anim
-      @animate.push animation
+      @animate[name + type + anim] = [animation, 6, callback]
       @sprites[name][type][0].opacity = 1
 
     update: =>
-      if @animate.length
-        if @ticks is 0
-          @ticks = 6
-          for anim in @animate
-            anim.next()
+      for animName of @animate
+        [anim, ticks, callback] = @animate[animName]
+        if ticks is 0
+          reset = anim.next()
+          if reset
+            delete @animate[animName]
+            callback()
+          else
+            @animate[animName][1] = 6
         else
-          @ticks -= 1
+          @animate[animName][1] -= 1
 
 
   return {
