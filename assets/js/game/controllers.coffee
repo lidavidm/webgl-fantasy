@@ -138,6 +138,11 @@ define deps, ($, THREE, Stats, TWEEN,
       @santi = models.Characters.create data['f646b729-5dbd-497b-9fc0-4df47cb401c3']
       @santi.behavesAs models.Santiago
 
+      @santi.set 'inventory', [ironSword]
+      equip = @santi.get 'equip'
+      equip.right = equip.left = ironSword
+      @santi.set 'equip', equip
+
       @elona = models.Characters.create
         name: "Elona"
       @elona.behavesAs models.Elona
