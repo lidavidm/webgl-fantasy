@@ -1,4 +1,5 @@
-define ["use!use/jquery", "use!use/Three"], ($, THREE) ->
+deps = ["use!use/jquery", "use!use/Three", "cs!./sprite-animation"]
+define deps, ($, THREE, animation) ->
   config =
     basePath: ''
 
@@ -12,9 +13,11 @@ define ["use!use/jquery", "use!use/Three"], ($, THREE) ->
     done: (callback) ->
       @deferred.done callback
 
-    resolve: (data) ->
+    resolve: (data...) ->
       @data = data
-      @deferred.resolve()
+      if data.length == 1
+        @data = data[0]
+      @deferred.resolve(data...)
 
     @fromTypeName: (type, name) ->
       resource = new Resource(Path.join(config.basePath, type, name))
@@ -81,10 +84,37 @@ define ["use!use/jquery", "use!use/Three"], ($, THREE) ->
 
     return resource
 
+  loadSpriteModel = (textureData) ->
+    resource = Resource.fromTypeName "texture", textureData.texture
+    texture = loadTexture(textureData.texture)
+    texture.done ->
+      sprite = new THREE.Sprite
+        map: texture.data
+        useScreenCoordinates: false
+        scaleByViewport: true
+      sprite.scale.x = sprite.scale.y = 1 / 8
+      sprite.uvScale.x = 1 / 8
+      sprite.position.y = 32
+
+      animation = new animation.SpriteFrameAnimation(
+        sprite,
+        texture.data,
+        textureData.frameSize.width,
+        textureData.frameSize.height)
+
+      for group of textureData.animation
+        animation.addGroup group, textureData.animation[group]...
+
+      resource.resolve sprite, animation
+
+    return resource
+
+
   return {
     Resource: Resource
     Path: Path
     loadJSON: loadJSON
     loadTexture: loadTexture
+    loadSpriteModel: loadSpriteModel
     setBasePath: setBasePath
     }

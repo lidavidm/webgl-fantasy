@@ -6,32 +6,13 @@ define deps, ($, THREE, view, _, resource, animation) ->
       @width = 32
       @height = 32
 
-      @texture = resource.loadTexture(@model.get('sprite').world.texture)
-      @texture.done @initializeSprite
+      resource.loadSpriteModel(@model.get('sprite').world)
+        .done(@initializeWorldSprite)
 
       @teleporting = false
 
-    initializeSprite: =>
-      @sprite = new THREE.Sprite
-        map: @texture.data
-        useScreenCoordinates: false
-        scaleByViewport: true
-      @sprite.scale.x = @sprite.scale.y = 1 / 8
-      @sprite.uvScale.x = 1 / 8
-      @sprite.position.y = 32
+    initializeWorldSprite: (@sprite, @animation) =>
       @scene.add @sprite, 1
-
-      textureData = @model.get('sprite').world
-
-      @animation = new animation.SpriteFrameAnimation(
-        @sprite,
-        @texture.data,
-        textureData.frameSize.width,
-        textureData.frameSize.height)
-
-      for group of textureData.animation
-        @animation.addGroup group, textureData.animation[group]...
-
       @animation.switchGroup "up"
       @skip = 0
       @velocity = [0, 0]
