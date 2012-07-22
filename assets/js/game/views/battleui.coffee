@@ -11,6 +11,7 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
 
     events:
       "click .name": "toggle"
+      "click .action": "actionHandler"
 
     hide: ->
       @
@@ -27,6 +28,10 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
       else
         $(@el)
           .addClass('expanded', ANIMATION_SPEED.FAST)
+
+    actionHandler: (e) ->
+      if $(e.target).data('action') is 'attack'
+        @options.spriteManager.play @model.get('name'), 'battle', 'left'
 
     mousedown: =>
       @expand()
@@ -57,25 +62,68 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
         .show()
 
       character.find('.actions')
-        .append(@actionsTemplate { data: {actions: ["Attack","Fight","Run"]}})
+        .append(@actionsTemplate { data: {actions: ["Attack","Spell","Run"]}})
 
 
-  class BattleUI extends view.View
+  class Battle extends view.View
     initialize: (el, args...) ->
       @el = $(el)
       @overlays = {}
+
+      @manager = new BattleSpriteManager
+
       for model in @model
-        console.log model
         @overlays[model.id] = new Overlay
           model: model
+          spriteManager: @manager
         @el.append @overlays[model.id].el
       @resolve()
 
     start: (@enemies...) ->
       @controller.pause @
+      @manager.addCharacter @controller.character
+      for overlay in @overlays
+        overlay.options.spriteManager = @manager
+
       @overlays[@model[0].id].show().toggle()
       @overlays[@model[1].id].show()
 
+    update: =>
+      @manager.update()
+
+
+  class BattleSpriteManager
+    constructor: ->
+      @sprites = {}
+      @animate = []
+      @ticks = 6
+
+    addCharacter: (characterView) ->
+      # TODO make this less dependent on CharacterView’s attributes
+      @sprites[characterView.model.id] = {
+        world: [characterView.sprite, characterView.animation]
+        battle: [characterView.battleSprite, characterView.battleAnimation]
+        }
+      characterView.battleSprite.position = characterView.sprite.position.clone()
+      characterView.battleSprite.opacity = 0
+
+    play: (name, type, anim) ->
+      console.log 'play', @sprites[name][type], name, anim
+      animation = @sprites[name][type][1]
+      animation.switchGroup anim
+      @animate.push animation
+      @sprites[name][type][0].opacity = 1
+
+    update: =>
+      if @animate.length
+        if @ticks is 0
+          @ticks = 6
+          for anim in @animate
+            anim.next()
+        else
+          @ticks -= 1
+
+
   return {
-    BattleUI: BattleUI
+    Battle: Battle
     }

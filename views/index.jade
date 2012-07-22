@@ -25,7 +25,7 @@ html
             h2 Equip
             ul
               <% _.each(_.keys(data.equip), function (slot) { %>
-              <li class="equip-slot" id="equip-slot-<%=slot%>"> <%= slot %>: </li>
+              <li class="equip-slot" id!="equip-slot-<%=slot%>"> <%= slot %>: </li>
               <% }); %>
           div.inventory
             h2 Inventory
@@ -36,7 +36,7 @@ html
               <% }); %>
                 
     script(type="text/template")#templ-inventory-item
-      <li class="inventory-item" data-item-id="<%= item.id %>"><%= item.name %></li>
+      <li class="inventory-item" data-item-id!="<%= item.id %>"><%= item.name %></li>
 
     script(type="text/template")#templ-dialogue-heard
       div.heard
@@ -73,7 +73,8 @@ html
       ul
         <% for (var i = 0; i < data.actions.length; i++) { %>
         li
-          button <%= data.actions[i] %>
+          button(data-action!="<%= data.actions[i].toLocaleLowerCase() %>").action
+            | <%= data.actions[i] %>
         <% } %>
 
   script(type="text/template")#templ-battle-overlay

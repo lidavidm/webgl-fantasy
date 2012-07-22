@@ -154,7 +154,7 @@ define deps, ($, THREE, Stats, TWEEN,
       @activatable = new collision.CollisionManager
 
       @ui = @addView views.WorldUI, null, $("#ui")
-      @battle = @addView views.BattleUI, [@santi,@elona], $("#ui")
+      @battle = @addView views.Battle, [@santi,@elona], $("#ui")
 
   return {
     Title: Title,
