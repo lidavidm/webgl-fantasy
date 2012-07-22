@@ -1,4 +1,4 @@
-deps = ["cs!./models/character"]
+deps = ["cs!./models/character", "cs!./models/behavior"]
 define deps, (modules...) ->
   exports = {}
 

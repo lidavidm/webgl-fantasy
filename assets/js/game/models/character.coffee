@@ -1,21 +1,6 @@
 deps = ["use!use/jquery", "use!use/backbone"]
 
 define deps, ($, Backbone) ->
-  class CharacterBehavior
-    constructor: (@model) ->
-
-    equipSlots: (item) ->
-      return []
-
-  class Santiago extends CharacterBehavior
-    equipSlots: (item) ->
-      switch item.type
-        when "weapon"
-          if item.data.type is "sword"
-            return ["left", "right"]
-      return []
-
-  class Elona extends CharacterBehavior
 
   class CharacterInventory
     constructor: (@model) ->
@@ -84,6 +69,4 @@ define deps, ($, Backbone) ->
   return {
     Character: Character
     Characters: Characters
-    Santiago: Santiago
-    Elona: Elona
     }
