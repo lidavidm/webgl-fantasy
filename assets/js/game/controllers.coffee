@@ -94,10 +94,10 @@ define deps, ($, THREE, Stats, TWEEN,
         @update = @oldUpdate
         @keyState.unpause()
 
-    animate: (currentTime = (new Date).getTime(), accumulator = 0) =>
+    animate: (currentTime, accumulator = 0) =>
       @stats.begin()
       # based on http://gafferongames.com/game-physics/fix-your-timestep/
-      newTime = (new Date).getTime()
+      newTime = window.performance.now()
       frameTime = newTime - currentTime
 
       if (frameTime > 250) then frameTime = 250
@@ -117,7 +117,7 @@ define deps, ($, THREE, Stats, TWEEN,
     transition: (controller) ->
       # Transition to a different controller within 1 frame
       @animate = ->
-        controller.animate()
+        controller.animate(window.performance.now())
       $(@renderer.domElement).remove()
       $(@stats.domElement).remove()
 
