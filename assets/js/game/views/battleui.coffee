@@ -39,11 +39,16 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
         if playTimes > 0
           @options.spriteManager.play @model.get('name'), 'battle', anim, ->
             playAnim(anim)
+        else
+          @options.spriteManager.hide @model.get('name'), 'battle'
 
         playTimes -= 1
 
       if result.hitAnimation?
         for anim in result.hitAnimation
+          if anim is HIT_ANIMATION.DIRECTIONAL
+            anim = @options.spriteManager.direction @model.get('name'),
+              @options.battle.enemies[0].npc.id
           playAnim(anim)
 
       console.log result.hits * result.damage
@@ -91,14 +96,24 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
         @overlays[model.id] = new Overlay
           model: model
           spriteManager: @manager
+          battle: this
         @el.append @overlays[model.id].el
       @resolve()
 
     start: (@enemies...) ->
       @controller.pause @
-      @manager.addCharacter @controller.character
-      for overlay in @overlays
-        overlay.options.spriteManager = @manager
+      @manager.addCharacter @controller.character.model.id,
+        @controller.character.sprite,
+        @controller.character.animation,
+        @controller.character.battleSprite,
+        @controller.character.battleAnimation
+
+      for enemy in enemies
+        @manager.addCharacter enemy.npc.id,
+          enemy.sprite,
+          enemy.animation,
+          enemy.sprite,
+          enemy.animation
 
       @overlays[@model[0].id].show().toggle()
       @overlays[@model[1].id].show()
@@ -113,20 +128,32 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
       @animate = {}
       @ticks = 6
 
-    addCharacter: (characterView) ->
-      # TODO make this less dependent on CharacterView’s attributes
-      @sprites[characterView.model.id] = {
-        world: [characterView.sprite, characterView.animation]
-        battle: [characterView.battleSprite, characterView.battleAnimation]
+    addCharacter: (id, worldSprite, worldAnim, battleSprite, battleAnim) ->
+      @sprites[id] = {
+        world: [worldSprite, worldAnim]
+        battle: [battleSprite, battleAnim]
         }
-      characterView.battleSprite.position = characterView.sprite.position.clone()
-      characterView.battleSprite.opacity = 0
+      battleSprite.position = worldSprite.position.clone()
+      battleSprite.opacity = 0
+
+    direction: (attacker, defender) ->
+      attacker = @sprites[attacker].world[0]
+      defender = @sprites[defender].world[0]
+
+      if attacker.position.x < defender.position.x
+        return "right"
+      else if attacker.defender.x > defender.position.x
+        return "left"
+
 
     play: (name, type, anim, callback=->) ->
       animation = @sprites[name][type][1]
       animation.switchGroup anim
       @animate[name + type + anim] = [animation, 6, callback]
       @sprites[name][type][0].opacity = 1
+
+    hide: (name, type) ->
+      @sprites[name][type][0].opacity = 0
 
     update: =>
       for animName of @animate
@@ -142,6 +169,12 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
           @animate[animName][1] -= 1
 
 
+  # Constants that implement semantic animations for CharacterBehavior
+  class HIT_ANIMATION
+    @DIRECTIONAL: "@direction"
+
+
   return {
     Battle: Battle
+    HIT_ANIMATION: HIT_ANIMATION
     }

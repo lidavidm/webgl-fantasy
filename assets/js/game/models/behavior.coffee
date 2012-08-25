@@ -1,4 +1,5 @@
-define ->
+deps = ["cs!../views/battleui"]
+define deps, (battleui) ->
   class CharacterBehavior
     actions: ["Attack", "Item", "Run"]
 
@@ -39,7 +40,7 @@ define ->
         hits += Math.ceil(3 * Math.random())
       return {
         ranged: false
-        hitAnimation: ["up"]
+        hitAnimation: [battleui.HIT_ANIMATION.DIRECTIONAL]
         damage: damage
         hits: hits
         }
