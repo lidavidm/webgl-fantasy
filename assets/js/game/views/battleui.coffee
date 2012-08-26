@@ -30,6 +30,8 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
           .addClass('expanded', ANIMATION_SPEED.FAST)
 
     actionHandler: (e) ->
+      $("button.action").addClass('disabled').prop('disabled', true);
+
       action = $(e.target).data('action')
       action = @model.behavior['action_' + action]
       for enemy in @options.battle.enemies
@@ -63,6 +65,7 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
     actionHandlerTargetSelected: (e) ->
       console.log $(e.target).data('enemy')
       $('.battle-target-selection').remove()
+      $("button.action").removeClass('disabled').prop('disabled', false);
       # result = action()
 
       # Waiting on https://trello.com/c/JhttUwgY
