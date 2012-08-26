@@ -1,5 +1,5 @@
-deps = ["use!use/jquery", "use!use/jquery-ui", "cs!../view", "use!use/underscore",
-  "cs!../resource", "cs!../data"]
+deps = ["use!use/jquery", "use!use/jquery-ui", "cs!../view",
+  "use!use/underscore", "cs!../resource", "cs!../data"]
 define deps, ($, $2, view, _, resource, data) ->
 
   ANIMATION_SPEED =
@@ -23,7 +23,9 @@ define deps, ($, $2, view, _, resource, data) ->
       $(@el)
         .addClass('templ-character-overlay')
         .addClass('ui-overlay')
-        .html(@template { data: @model.toJSON(), inventoryItem: @templateInventoryItem })
+        .html @template
+          data: @model.toJSON()
+          inventoryItem: @templateInventoryItem
 
       equip = @model.get 'equip'
       for slot of equip
@@ -45,14 +47,18 @@ define deps, ($, $2, view, _, resource, data) ->
               if slot in @model.behavior.equipSlots(@model.inventory.find itemId)
                 $(slotEl).addClass 'allowable', ANIMATION_SPEED.FAST
           stop: =>
-            $(@el).find('.equip-slot').removeClass 'allowable', ANIMATION_SPEED.FAST
+            $(@el)
+              .find('.equip-slot')
+              .removeClass 'allowable', ANIMATION_SPEED.FAST
 
       $(@el)
         .find('.inventory ul')
         .droppable
           drop: (event, ui) =>
             $(ui.draggable).appendTo($(event.target)).css { left: 0, top: 0 }
-            $(@el).find('.equip-slot').removeClass 'allowable', ANIMATION_SPEED.FAST
+            $(@el)
+              .find('.equip-slot')
+              .removeClass 'allowable', ANIMATION_SPEED.FAST
 
       $(@el)
         .find('.equip-slot')

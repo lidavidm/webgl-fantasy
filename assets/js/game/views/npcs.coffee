@@ -1,4 +1,5 @@
-deps = ["use!use/jquery", "use!use/Three", "cs!../view", "cs!../sprite-animation"]
+deps = ["use!use/jquery", "use!use/Three", "cs!../view",
+  "cs!../sprite-animation"]
 define deps, ($, THREE, view, animation) ->
   class NonPlayerCharacters extends view.View
     initialize: (args...) ->

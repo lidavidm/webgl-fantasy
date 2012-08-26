@@ -1,4 +1,5 @@
-deps = ["use!use/jquery", "use!use/Three", "cs!../view", "cs!../resource", "cs!../data"]
+deps = ["use!use/jquery", "use!use/Three", "cs!../view", "cs!../resource",
+  "cs!../data"]
 define deps,
   ($, THREE, view, resource, data) ->
     class Tilemap extends view.View
@@ -27,7 +28,10 @@ define deps,
 
         @tilesets = []
         for ts in mapJson.tilesets
-          @tilesets.push [resource.loadTexture(resource.Path.split(ts.image)[1]), []]
+          @tilesets.push [
+            resource.loadTexture(resource.Path.split(ts.image)[1]),
+            []
+            ]
         # Only the first tileset needs a padding tile since TMX is
         # zero-indexed
         @tilesets[0][1].push [

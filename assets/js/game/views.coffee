@@ -1,5 +1,6 @@
 deps = ["cs!./views/tilemap", "cs!./views/character", "cs!./views/camera",
-  "cs!./views/worldui", "cs!./views/titleui", "cs!./views/npcs", "cs!./views/battleui"]
+  "cs!./views/worldui", "cs!./views/titleui", "cs!./views/npcs",
+  "cs!./views/battleui"]
 define deps, (views...) ->
   exports = {}
   for view in views

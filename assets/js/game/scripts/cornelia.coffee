@@ -3,7 +3,7 @@ define ["cs!./script-base"], (base) ->
     entered: (controller, data) ->
       console.log "entered"
 
-    loadedNPC: base.global (controller, data, name, sprite, animation, object) ->
+    loadedNPC: base.global (controller, data, name, sprite, anim, object) ->
       if name is "thief"
         controller.cameraView.scrollTo
           x: 0.5 * (controller.character.sprite.position.x + sprite.position.x)
@@ -12,7 +12,7 @@ define ["cs!./script-base"], (base) ->
           controller.cameraView.scrollTo controller.character.sprite.position
           controller.battle.start
             sprite: sprite
-            animation: animation
+            animation: anim
             npc: object
 
     }

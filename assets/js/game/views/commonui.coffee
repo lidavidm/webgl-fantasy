@@ -15,12 +15,11 @@ define ["use!use/jquery"], ($) ->
         .html('<div/><span>' + @val + ' ' + @label + '</span>')
         .children('div')
         .width(0)
-        .animate({
-          width: (100 *
-            (@val / @maxVal))
-          },
-          { duration: ANIMATION_SPEED.SLOW })
-      @
+        .animate(
+          { width: (100 * (@val / @maxVal)) },
+          { duration: ANIMATION_SPEED.SLOW }
+          )
+      return this
 
   return {
     ANIMATION_SPEED: ANIMATION_SPEED
