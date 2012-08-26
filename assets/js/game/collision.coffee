@@ -1,5 +1,8 @@
-define
-  CollisionManager: class CollisionManager
+define ->
+  class CollisionException
+    constructor: (@msg) ->
+
+  class CollisionManager
     constructor: ->
       @rects = []
 
@@ -30,7 +33,7 @@ define
         rx = px
         py = py + orientation
       else
-        throw ("CollisionManager.faces: invalid axis: " + axis)
+        throw CollisionException("faces: invalid axis: " + axis)
 
       for rectC in @rects
         # sides = [[[qx, qy], [sx, sy]]] * 4
@@ -111,3 +114,8 @@ define
               return true
 
       return false
+
+  return {
+    CollisionManager: CollisionManager,
+    CollisionException: CollisionException
+    }
