@@ -8,9 +8,13 @@ define deps,
         @velocity = [0, 0]
         @resolve()
 
-      setPosition: (position) ->
-        @camera.position.x = position.x
-        @camera.position.y = position.y
+      position: (position=null) ->
+        if position isnt null
+          @camera.position.x = position.x
+          @camera.position.y = position.y
+          return this
+        else
+          return @camera.position
 
       scrollTo: (target, speed=500) ->
         position = $.extend {}, @camera.position

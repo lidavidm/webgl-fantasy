@@ -106,7 +106,7 @@ define deps, ($, THREE, view, _, resource, animation) ->
       @sprite.position.x -= (pixelWidth / 2) - (@width / 2)
       @sprite.position.y -= (pixelHeight / 2) - (@height / 2)
       @sprite.position.y *= -1
-      @controller.cameraView.setPosition @sprite.position
+      @controller.cameraView.position @sprite.position
 
       @controller.scripting.trigger "entered"
       @resolve()
@@ -115,7 +115,7 @@ define deps, ($, THREE, view, _, resource, animation) ->
       if @moving
         @sprite.position.x += @velocity[0]
         @sprite.position.y += @velocity[1]
-        @controller.cameraView.setPosition @sprite.position
+        @controller.cameraView.position @sprite.position
         collision = @controller.collision.collidesDirections {
           x: @sprite.position.x + 2, y: @sprite.position.y + 2,
           height: @height, width: @width }
