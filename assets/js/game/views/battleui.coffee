@@ -1,5 +1,5 @@
-deps = ["use!use/jquery", "use!use/jquery-ui", "cs!../view", "use!use/underscore",
-  "cs!../resource", "cs!../data", "cs!./commonui"]
+deps = ["use!use/jquery", "use!use/jquery-ui", "cs!../view",
+  "use!use/underscore", "cs!../resource", "cs!../data", "cs!./commonui"]
 define deps, ($, $2, view, _, resource, data, commonui) ->
   ANIMATION_SPEED = commonui.ANIMATION_SPEED
 
@@ -32,26 +32,60 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
     actionHandler: (e) ->
       action = $(e.target).data('action')
       action = @model.behavior['action_' + action]
-      result = action()
+      for enemy in @options.battle.enemies
+        enemyPos = enemy.sprite.position # from center of map
+        cameraPos = @options.battle.camera.position()  # from center of map
+        canvasPos = $("canvas").offset() # from topleft of page
 
-      playTimes = result.hits
-      playAnim = (anim) =>
-        if playTimes > 0
-          @options.spriteManager.play @model.get('name'), 'battle', anim, ->
-            playAnim(anim)
-        else
-          @options.spriteManager.hide @model.get('name'), 'battle'
+        # from center of canvas
+        offsetX = enemyPos.x - cameraPos.x
+        offsetY = enemyPos.y - cameraPos.y
 
-        playTimes -= 1
+        # convert coords
+        offsetX = canvasPos.left + 320 + offsetX
+        offsetY = canvasPos.top + 320 - offsetY
 
-      if result.hitAnimation?
-        for anim in result.hitAnimation
-          if anim is HIT_ANIMATION.DIRECTIONAL
-            anim = @options.spriteManager.direction @model.get('name'),
-              @options.battle.enemies[0].npc.id
-          playAnim(anim)
+        # center on sprite
+        offsetX -= 32
+        offsetY -= 32
 
-      console.log result.hits * result.damage
+        target = $("<div>")
+          .css({
+            position: 'absolute',
+            left: offsetX,
+            top: offsetY
+            })
+          .addClass('battle-target-selection')
+          .data('enemy', enemy.npc.id)
+          .appendTo($(document.body))
+        target.click @actionHandlerTargetSelected
+
+    actionHandlerTargetSelected: (e) ->
+      console.log $(e.target).data('enemy')
+      $('.battle-target-selection').remove()
+      # result = action()
+
+      # Waiting on https://trello.com/c/JhttUwgY
+      # playAnim = (anim, times) =>
+      #   animName = anim.animation()
+      #   if times > 0
+      #     @options.spriteManager.play @model.get('name'), 'battle', animName, ->
+      #       playAnim(anim, times - 1)
+      #   else
+      #     @options.spriteManager.hide @model.get('name'), 'battle'
+      #     # if anim.after()
+      #     #   playAnim(anim.after(), anim.times())
+
+      # if result.hitAnimation?
+      #   for anim in result.hitAnimation
+      #     if anim instanceof HIT_ANIMATION.DIRECTIONAL.klass
+      #       anim.animation(@options.spriteManager.direction(
+      #         @model.get('name'),
+      #         @options.battle.enemies[0].npc.id
+      #         ))
+      #     playAnim(anim, result.hits)
+
+      # console.log result.hits * result.damage
 
     mousedown: =>
       @expand()
@@ -76,7 +110,9 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
         .maxValue(@model.get('maxStats').mana)
         .value(@model.get('stats').mana)
         .show()
-      @cooldownStatbar = new commonui.Statbar($(@el).find('.statbar')[2], 'cooldown')
+      @cooldownStatbar = new commonui.Statbar(
+        $(@el).find('.statbar')[2],
+        'cooldown')
         .maxValue(5)
         .value(2.5)
         .show()
@@ -102,6 +138,7 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
 
     start: (@enemies...) ->
       @controller.pause @
+      @camera = @controller.cameraView
       @manager.addCharacter @controller.character.model.id,
         @controller.character.sprite,
         @controller.character.animation,
@@ -114,6 +151,8 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
           enemy.animation,
           enemy.sprite,
           enemy.animation
+
+        enemy.sprite.opacity = 1
 
       @overlays[@model[0].id].show().toggle()
       @overlays[@model[1].id].show()
@@ -137,6 +176,7 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
       battleSprite.opacity = 0
 
     direction: (attacker, defender) ->
+      # TODO: more robust algorithm
       attacker = @sprites[attacker].world[0]
       defender = @sprites[defender].world[0]
 
@@ -144,7 +184,6 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
         return "right"
       else if attacker.defender.x > defender.position.x
         return "left"
-
 
     play: (name, type, anim, callback=->) ->
       animation = @sprites[name][type][1]
@@ -154,6 +193,9 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
 
     hide: (name, type) ->
       @sprites[name][type][0].opacity = 0
+
+    walk: (name, x, y) ->
+
 
     update: =>
       for animName of @animate
@@ -169,10 +211,37 @@ define deps, ($, $2, view, _, resource, data, commonui) ->
           @animate[animName][1] -= 1
 
 
+  # One step in a sequence of animations/actions for a hit animation
+  class HitAnimationStep
+    constructor: ->
+      @_after = null
+      @_times = 1
+
+    @_makeprop: (varname) ->
+      func = (_value=null) ->
+        if _value isnt null
+          this[varname] = _value
+          return this
+        else
+          return this[varname]
+
+    after: @_makeprop "_after"
+    times: @_makeprop "_times"
+    animation: @_makeprop "_animation"
+
+  class DirectionalAnimationStep extends HitAnimationStep
+
+  class MoveToAnimationStep extends HitAnimationStep
+
   # Constants that implement semantic animations for CharacterBehavior
   class HIT_ANIMATION
-    @DIRECTIONAL: "@direction"
-
+    @_makeconstant: (klass) ->
+      func = ->
+        new klass
+      func.klass = klass
+      return func
+    @DIRECTIONAL: @_makeconstant DirectionalAnimationStep
+    @MOVETO: @_makeconstant MoveToAnimationStep
 
   return {
     Battle: Battle

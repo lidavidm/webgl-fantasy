@@ -40,7 +40,10 @@ define deps, (battleui) ->
         hits += Math.ceil(3 * Math.random())
       return {
         ranged: false
-        hitAnimation: [battleui.HIT_ANIMATION.DIRECTIONAL]
+        hitAnimation: [
+          battleui.HIT_ANIMATION.DIRECTIONAL().after(
+            battleui.HIT_ANIMATION.DIRECTIONAL())
+          ]
         damage: damage
         hits: hits
         }
