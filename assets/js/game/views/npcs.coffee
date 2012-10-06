@@ -8,6 +8,7 @@ define deps, ($, THREE, view, animation) ->
 
     addSprite: (name, texture, callback=->) ->
       texture.done =>
+        texture.data.flipY = true
         @sprites[name] = sprite = new THREE.Sprite
           map: texture.data
           useScreenCoordinates: false

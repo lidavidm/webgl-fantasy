@@ -64,6 +64,7 @@ define deps, ($, THREE, animation) ->
     else
       resource = Resource.fromPath name
     texture = THREE.ImageUtils.loadTexture resource.url, undefined, (image) ->
+      texture.flipY = false
       resource.resolve texture
 
     return resource
@@ -78,6 +79,7 @@ define deps, ($, THREE, animation) ->
     json = loadJSON(name)
 
     $.when(texture.deferred, json.deferred).done ->
+      texture.data.flipY = false
       resource.resolve
         texture: texture
         sheet: json
@@ -88,6 +90,7 @@ define deps, ($, THREE, animation) ->
     resource = Resource.fromTypeName "texture", textureData.texture
     texture = loadTexture(textureData.texture)
     texture.done ->
+      texture.data.flipY = true
       sprite = new THREE.Sprite
         map: texture.data
         useScreenCoordinates: false

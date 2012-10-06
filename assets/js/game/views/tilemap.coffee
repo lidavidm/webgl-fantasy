@@ -98,7 +98,6 @@ define deps,
               x += 1
 
             mesh = new THREE.Mesh plane, new THREE.MeshFaceMaterial
-            mesh.rotation.x = Math.PI / 2
             @scene.add(mesh, position)
             @meshes.push [mesh, position]
             position += 1
